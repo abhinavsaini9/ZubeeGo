@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const mongoose = require('mongoose');
 const passport = require('passport');
+const cors = require('cors');
+var cookieSession = require('cookie-session');
 const bodyparser = require('body-parser')
 const methodoverride = require("method-override")
 const User = require("./models/user")
@@ -9,9 +11,20 @@ const Localstrategy = require("passport-local")
 const flash = require("connect-flash");
 const user = require("./models/user");
 const Announcement = require("./models/announcement");
+require('./passport-setup');
 
 
 require('dotenv').config();
+
+app.use(cors());
+app.use(bodyparser.urlencoded({extended: false}));
+
+app.use(bodyparser.json());
+
+app.use(cookieSession({
+    name: 'cookie-session',
+    keys: ['key1', 'key2']
+}))
 
 mongoose
  .connect(process.env.DB_URL,{
@@ -117,6 +130,18 @@ app.post("/login", passport.authenticate("local", {
 
 
 
+//////////////google auth/////////////////////////////
+
+app.get('/failed',(req,res) => {res.send("You failed");});
+app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/google/callback',   passport.authenticate('google', { failureRedirect: '/landing' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+});
+
+
 
 app.get("/announcements",isLoggedIn,function(req,res){
      
@@ -135,16 +160,16 @@ app.get("/announcements",isLoggedIn,function(req,res){
 });
 
 app.post("/announcements",isLoggedIn,function(req,res){
+    var address = req.body.address;
     var author = {
         username: req.user.username,
         id: req.user._id
     };
-    var newAnnouncement = new User({ text: req.body.text,announcedBy: author});
+    var newAnnouncement = new User({ address : address, text: req.body.text,announcedBy: author});
     Announcement.create(newAnnouncement,function(err,newAnnouncement){
         if (err) {
             console.log(err);
-            console.log(newdiscussion)
-            
+            console.log(newdiscussion)    
         }
         else {
            newAnnouncement.save();
@@ -157,12 +182,9 @@ app.post("/announcements",isLoggedIn,function(req,res){
 
 
 
-
-
-
-
 app.get("/logout", function (req, res) {
     req.logOut();
+    console.log("U have been logged out!!");
     req.flash("success", "Logged you out!!")
     res.redirect("/landing");
 });

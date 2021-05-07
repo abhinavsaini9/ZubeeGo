@@ -14,7 +14,7 @@ var announcementSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    annoucementTime:{
+    announcementTime:{
          type:String,
          default:new Date().toISOString().slice(0,10)
     },
@@ -26,6 +26,21 @@ var announcementSchema = mongoose.Schema({
          username:String
          
     },
+    address: {
+        type: String,
+        required: [true, 'Please add an address']
+        },
+    location: {
+        type: {
+          type: String,
+          enum: ['Point']
+        },
+    coordinates: {
+          type: [Number],
+          index: '2dsphere'
+        },
+        formattedAddress: String
+        },
     verifiedBy:[
          {
              type: mongoose.Schema.Types.ObjectId,
@@ -39,6 +54,19 @@ var announcementSchema = mongoose.Schema({
         }
     ]
 });
+
+announcementSchema.pre('save', async function(next) {
+    const loc = await geocoder.geocode(this.address);
+    this.location = {
+      type: 'Point',
+      coordinates: [loc[0].longitude, loc[0].latitude],
+      formattedAddress: loc[0].formattedAddress
+    };
+  
+    // Do not save address
+    this.address = undefined;
+    next();
+  });
 
 
 module.exports =mongoose.model("Announcement",announcementSchema);
