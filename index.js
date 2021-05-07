@@ -11,6 +11,8 @@ const Localstrategy = require("passport-local")
 const flash = require("connect-flash");
 const user = require("./models/user");
 const Announcement = require("./models/announcement");
+const announcement = require("./models/announcement");
+const { rawListeners } = require("./models/announcement");
 require('./passport-setup');
 
 
@@ -152,7 +154,7 @@ app.get("/announcements",isLoggedIn,function(req,res){
         }
         else{
 
-            res.render("/announcements/show",{Announcement:foundAnnouncement})
+            res.render("announcement",{Announcement:foundAnnouncement})
         }
     })
     
@@ -160,27 +162,31 @@ app.get("/announcements",isLoggedIn,function(req,res){
 });
 
 app.post("/announcements",isLoggedIn,function(req,res){
+    //console.log(req.body)
     var address = req.body.address;
     var author = {
         username: req.user.username,
         id: req.user._id
     };
-    var newAnnouncement = new User({ address : address, text: req.body.text,announcedBy: author});
+    var newAnnouncement = new Announcement({ address : address, text: req.body.text,announcedBy: author});
     Announcement.create(newAnnouncement,function(err,newAnnouncement){
         if (err) {
             console.log(err);
-            console.log(newdiscussion)    
+            console.log(newAnnouncement)    
         }
         else {
            newAnnouncement.save();
+           console.log(newAnnouncement)
            res.redirect("/announcements");  
         }
-
     })
 
 });
 
 
+app.get("/add_announcements",isLoggedIn,function(req,res){ 
+   res.render("add_announcements")
+});
 
 app.get("/logout", function (req, res) {
     req.logOut();

@@ -1,5 +1,5 @@
 var mongoose= require("mongoose");
-
+var geocoder = require("./../utils/geocoder")
 var announcementSchema = mongoose.Schema({
     text:{
         type: String,
@@ -27,8 +27,7 @@ var announcementSchema = mongoose.Schema({
          
     },
     address: {
-        type: String,
-        required: [true, 'Please add an address']
+        type: String
         },
     location: {
         type: {
