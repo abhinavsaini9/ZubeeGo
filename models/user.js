@@ -12,7 +12,21 @@ var UserSchema = new mongoose.Schema({
     },
     email:{
         type: String
-    }
+    },
+    announcedByMe:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Announcement"
+        }
+        
+    ],
+    restAddedByMe:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Restaurant"
+        }
+    ]
+
 });
 
 UserSchema.plugin(passportLocalMongoose);

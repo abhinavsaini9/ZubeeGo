@@ -12,13 +12,27 @@ const flash = require("connect-flash");
 const user = require("./models/user");
 const Announcement = require("./models/announcement");
 const announcement = require("./models/announcement");
-const { rawListeners } = require("./models/announcement");
-require('./passport-setup');
+const Restaurant = require("./models/restaurant");
+// const { rawListeners } = require("./models/announcement");
+const AppError = require("./AppError");
+const Review = require("./models/review");
+const Comment = require("./models/comment");
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+// require('./passport-setup');
 
 
 require('dotenv').config();
 
-app.use(cors());
+app.use(
+    cors({
+         origin: "http://localhost:3000", // allow to server to accept request from different origin
+         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+         credentials: true, // allow session cookie from browser to pass through
+   })
+);
 app.use(bodyparser.urlencoded({extended: false}));
 
 app.use(bodyparser.json());
@@ -69,12 +83,12 @@ app.use(function (req, res, next) {
 
 app.use(flash());
 
-app.use(function (req, res, next) {
-    res.locals.currentUser = req.user;
-    res.locals.error = req.flash("error");
-    res.locals.success = req.flash("success");
-    next();
-});
+// app.use(function (req, res, next) {
+//     res.locals.currentUser = req.user;
+//     res.locals.error = req.flash("error");
+//     res.locals.success = req.flash("success");
+//     next();
+// });
 
 //////////////////login and signup routes/////////////////////////////////
 
@@ -130,21 +144,27 @@ app.post("/login", passport.authenticate("local", {
 });
 
 
-
+app.get("/logout", function (req, res) {
+    req.logOut();
+    console.log("U have been logged out!!");
+    req.flash("success", "Logged you out!!")
+    res.redirect("/landing");
+});
 
 //////////////google auth/////////////////////////////
 
-app.get('/failed',(req,res) => {res.send("You failed");});
-app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+// app.get('/failed',(req,res) => {res.send("You failed");});
+// app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get('/google/callback',   passport.authenticate('google', { failureRedirect: '/landing' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-});
+// app.get('/google/callback',   passport.authenticate('google', { failureRedirect: '/landing' }),
+//   function(req, res) {
+//     // Successful authentication, redirect home.
+//     res.send(req.user);
+//     res.redirect('/');
+// });
 
 
-
+//////////////////////Announcement///////////////////////////////////////////////////////////////////////////////////////////////
 app.get("/announcements",isLoggedIn,function(req,res){
      
     Announcement.find().exec(function (err, foundAnnouncement){
@@ -153,22 +173,28 @@ app.get("/announcements",isLoggedIn,function(req,res){
             console.log(err);
         }
         else{
-
-            res.render("announcement",{Announcement:foundAnnouncement})
+            // console.log(foundAnnouncement[0].announcedBy);
+            res.render("announcement",{Announcements:foundAnnouncement})
         }
     })
     
     
 });
 
+app.get("/add_announcements",isLoggedIn,function(req,res){ 
+    res.render("add_announcements")
+ });
+
 app.post("/announcements",isLoggedIn,function(req,res){
     //console.log(req.body)
     var address = req.body.address;
-    var author = {
-        username: req.user.username,
-        id: req.user._id
+    var authors = {
+        id: req.user.id ,
+        username: req.user.username
+        
     };
-    var newAnnouncement = new Announcement({ address : address, text: req.body.text,announcedBy: author});
+    console.log(authors);
+    var newAnnouncement = new Announcement({ address : address, text: req.body.text,announcedBy: authors});
     Announcement.create(newAnnouncement,function(err,newAnnouncement){
         if (err) {
             console.log(err);
@@ -183,19 +209,219 @@ app.post("/announcements",isLoggedIn,function(req,res){
 
 });
 
+app.get("/announcements/:id/edit",checkAnnouncementOwnership,function(req,res){
+    Announcement.findById(req.params.id, function (err, founddiscussion) {
+        res.render("edit_announcement", { Announcement: founddiscussion });
+    });
+})
+app.put("/announcements/:id", checkAnnouncementOwnership, async (req, res,next) => {
+    
+    await Announcement.findByIdAndUpdate(req.params.id, {text: req.body.text,address: req.body.address}, function (err,updatedAnnouncement) {
+        if (err) {
+            res.redirect("/annoucements");
 
-app.get("/add_announcements",isLoggedIn,function(req,res){ 
-   res.render("add_announcements")
+        } else {
+            // updatedAnnouncement.save();
+            req.flash("success", "Successfully Updated");
+            res.redirect("/announcements");
+        }
+    })
 });
 
-app.get("/logout", function (req, res) {
-    req.logOut();
-    console.log("U have been logged out!!");
-    req.flash("success", "Logged you out!!")
-    res.redirect("/landing");
+app.delete("/announcements/:id", checkAnnouncementOwnership, async(req, res,next) => {
+    Announcement.findByIdAndRemove(req.params.id, function (err,) {
+        if (err) {
+            res.redirect("back");
+        } else {
+            User.findById(req.user._id).exec(function (err, currentUser) {
+                if (err) {
+                    console.log(err);
+                    throw new AppError('User not found', 401);
+                }
+                else {
+                    currentUser.announcedByMe.pull(req.params.id);
+                    
+                    currentUser.save();
+                    
+                    req.flash("success", "Successfully Deleted");
+                    res.redirect("/announcements");
+                }
+            })
+
+        }
+    });
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_KEY,
+    api_secret: process.env.CLOUD_SECRET
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: 'Hotel',
+        allowedFormats: ['jpeg','png','jpeg']
+    }
+})
+
+const upload = multer({storage});
+app.get("/add_restaurants",isLoggedIn,function(req,res){
+    res.render("addHotel");
+})
+
+app.post("/restaurants",isLoggedIn,upload.array('imgRest'),function(req,res){
+    var address = req.body.address;
+    var author = {
+        username: req.user.username,
+        id: req.user.id
+    };
+    
+    var text = req.body.text
+    var newRestaurant = new Restaurant({ address : address, name: req.body.name,text:text,createdBy: author});
+    newRestaurant.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+    Restaurant.create(newRestaurant,function(err,newRestaurant){
+        if (err) {
+            console.log(err);
+            console.log(newRestaurant)
+        }
+        else {
+            console.log(newRestaurant)
+            newRestaurant.save();
+            User.findById(req.user.id,function(err,currentUser){
+                currentUser.restAddedByMe.push(newRestaurant);
+                currentUser.save();
+                res.redirect("/");
+            })
+            
+            
+        }
+    })
 });
 
 
+app.get("/restaurants/:id", isLoggedIn, async (req, res, next) => {
+        try{
+        Restaurants.findById(req.params.id).populate("reviews").exec(async (err, foundRestaurant, next) => {
+            if (err) {
+                console.log(err);
+                next(new AppError());
+            }
+            await User.findById(req.user._id).exec(function (err, currUser){
+                if (err) {
+                    console.log(err);
+                }
+                else res.render("restaurants_show");
+            })
+
+        })}
+        catch(e){
+            next(e);
+        }
+})
+
+app.post("/restaurants/:id/image",isLoggedIn,upload.array('imgRestOther'),function(req,res){
+    Restaurant.findById(req.params.id,function(err,foundRestaurant){
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            foundRestaurant.images.push(...imgs);
+            foundRestaurant.save();
+            res.redirect("/restaurants/"+req.params.id);
+        }
+    })
+})
+
+app.post("/restaurants/:id",isLoggedIn,upload.array('imgReview'),async(req, res,next)=>{
+    try{
+      var text = req.body.text;
+      var newReview = new Review({text:text});
+      newReview.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+      await Review.create(newReview,function(err,newReview){
+          if(err){
+              console.log(err);
+              next(new AppError());
+          }
+          else{
+             Restaurant.findById(req.params.id).exec(function(err,foundRestaurant){
+                if(err){
+                    console.log(err);
+              next(new AppError());
+                }
+                else{
+                newReview.save();
+                foundRestaurant.reviews.push(newReview);
+                foundRestaurant.save();
+                res.redirect("/restaurants/:"+req.params.id);}
+            })
+          }
+      })
+      
+    }
+    catch(e){
+        next(e);
+    }
+})
+
+app.get("/restaurants/:id/reviews/:review_id", isLoggedIn, async (req, res, next) => {
+    try{
+    Review.findById(req.params.review_id).populate("comments").exec(async (err, foundReview, next) => {
+        if (err) {
+            console.log(err);
+            next(new AppError());
+        }
+        await User.findById(req.user._id).exec(function (err, currUser){
+            if (err) {
+                console.log(err);
+            }
+            else res.render("comment_show");
+        })
+
+    })}
+    catch(e){
+        next(e);
+    }
+})
+
+app.post("/restaurants/:id/reviews/:review_id",isLoggedIn,async(req, res,next)=>{
+    try{
+      var text = req.body.text;
+      var newComment = new Comment({text:text});
+      
+      await Comment.create(newComment,function(err,newComment){
+          if(err){
+              console.log(err);
+              next(new AppError());
+          }
+          else{
+            Review.findById(req.params.review_id).exec(function(err,foundReview){
+                if(err){
+                    console.log(err);
+              next(new AppError());
+                }
+                else{
+                newComment.save();
+                foundReviews.comment.push(newComment);
+                foundReviews.save();
+                res.redirect("/restaurants/:"+req.params.id+"/reviews/"+req.params.review_id);}
+            })
+          }
+      })
+      
+    }
+    catch(e){
+        next(e);
+    }
+})
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -206,6 +432,7 @@ app.get("/logout", function (req, res) {
 
 
 
+//////////////////////////////////////////////// middleware ////////////////////////////////////////////////////////////////////////////
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -218,6 +445,36 @@ function isLoggedIn(req, res, next) {
     res.redirect("/landing");
 };
 
+function checkAnnouncementOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        Announcement.findById(req.params.id, function (err, foundAnnouncement) {
+            if (err) {
+                req.flash("error", "not found");
+                res.redirect("back");
+            } else {
+                
+                if (foundAnnouncement.announcedBy.id.equals(req.user._id)) {
+                    next();
+                }
+               
+                else {
+                    req.flash("error", "You dont have permission to do that");
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
+}
+
+
+
+
+
+
+
+//////////////////////////////////////// Error Handling /////////////////////////////////////////////////////////////
 app.all('*', (req, res, next) => {
     
     next(new AppError('Page Not Found', 404));
