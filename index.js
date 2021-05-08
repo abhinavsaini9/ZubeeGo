@@ -140,7 +140,7 @@ app.post("/login", passport.authenticate("local", {
     const redirectUrl = req.session.returnTo || '/';
     delete req.session.returnTo;
     res.redirect(redirectUrl);
-
+    
 });
 
 
@@ -272,6 +272,23 @@ const upload = multer({storage});
 app.get("/add_restaurants",isLoggedIn,function(req,res){
     res.render("addHotel");
 })
+
+app.get("/showrestaurants",isLoggedIn,function(req,res){
+     
+    Restaurant.find().exec(function (err, foundRestaurant){
+        if (err) {
+            console.log("something went wrong");
+            console.log(err);
+        }
+        else{
+            // console.log(foundAnnouncement[0].announcedBy);
+            res.render("announcement",{Announcements:foundRestaurant})
+        }
+    })
+    
+    
+});
+
 
 app.post("/restaurants",isLoggedIn,upload.array('imgRest'),function(req,res){
     var address = req.body.address;

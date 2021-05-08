@@ -27,7 +27,25 @@
 			<link rel="stylesheet" href="/homeCss/style-noscript.css" />
 		</noscript>
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+		<link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
 	</head>
+
+
+	<!-- <script>
+
+		var home = {Latitude:"", Longitude:""};
+  		if (navigator.geolocation) {
+    		navigator.geolocation.getCurrentPosition(showPosition);
+  		} 
+		function showPosition(position) {
+			home.Latitude = position.coords.latitude;
+			home.Longitude = position.coords.longitude;
+			console.log(home)
+		}
+
+	</script> -->
+
 	<body class="no-sidebar">
 
 		<!-- Header -->
@@ -71,6 +89,8 @@
 
 			</div>
 
+			<div id="map" style="width: 100%; height: 530px; border-radius: 5px;"></div>
+			<script src ="/js/map.js"></script>
 			<!-- carousel -->
 			<section class="carousel">
 				<div class="reel">

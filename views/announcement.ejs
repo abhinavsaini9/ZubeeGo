@@ -157,7 +157,7 @@
         
         <div class="container">
           <div class="row">
-            <% Announcements.forEach(function(announcement){%>
+            <% Announcements.slice().reverse().forEach(function(announcement){%>
             <div class="6u card" style="padding-left:10%;padding-right:5%">
               <section class="special">                
                 <h3 style="float: left;color: #cc3399;"><a href="location2.html"><%=announcement.location.formattedAddress%></a></h3>
