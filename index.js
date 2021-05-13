@@ -312,10 +312,9 @@ app.post("/restaurants",isLoggedIn,upload.array('imgRest'),function(req,res){
             User.findById(req.user.id,function(err,currentUser){
                 currentUser.restAddedByMe.push(newRestaurant);
                 currentUser.save();
-                res.redirect("/");
-            })
-            
-            
+                console.log(newRestaurant.id);
+                res.redirect("/restaurants/"+ newRestaurant.id);
+            })       
         }
     })
 });
@@ -323,7 +322,7 @@ app.post("/restaurants",isLoggedIn,upload.array('imgRest'),function(req,res){
 
 app.get("/restaurants/:id", isLoggedIn, async (req, res, next) => {
         try{
-        Restaurants.findById(req.params.id).populate("reviews").exec(async (err, foundRestaurant, next) => {
+        Restaurant.findById(req.params.id).populate("reviews").exec(async (err, foundRestaurant, next) => {
             if (err) {
                 console.log(err);
                 next(new AppError());
@@ -342,15 +341,19 @@ app.get("/restaurants/:id", isLoggedIn, async (req, res, next) => {
 })
 
 app.post("/restaurants/:id/image",isLoggedIn,upload.array('imgRestOther'),function(req,res){
-    Restaurant.findById(req.params.id,function(err,foundRestaurant){
+    
+    Restaurant.findById(req.params.id,async function(err,foundRestaurant){
         if(err){
             console.log(err);
             next(new AppError());
         }
         else{
             const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            console.log(foundRestaurant);
             foundRestaurant.images.push(...imgs);
-            foundRestaurant.save();
+            console.log(imgs);
+            await foundRestaurant.save();
+            console.log(foundRestaurant);
             res.redirect("/restaurants/"+req.params.id);
         }
     })
