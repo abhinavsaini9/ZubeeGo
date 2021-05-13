@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<!--
+	Helios by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Search Place</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="/homeJs/jquery.min.js"></script>
+		<script src="/homeJs/jquery.dropotron.min.js"></script>
+		<script src="/homeJs/jquery.scrolly.min.js"></script>
+		<script src="/homeJs/jquery.onvisible.min.js"></script>
+		<script src="/homeJs/skel.min.js"></script>
+		<script src="/homeJs/skel-layers.min.js"></script>
+		<script src="/homeJs/init.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://kit.fontawesome.com/f6c224efb3.js" crossorigin="anonymous"></script>
+		<noscript>
+			<link rel="stylesheet" href="/homeCss/skel.css" />
+			<link rel="stylesheet" href="/homeCss/review.css" />
+			<link rel="stylesheet" href="/homeCss/table.css" />
+			<link rel="stylesheet" href="/homeCss/style.css" />
+			<link rel="stylesheet" href="/homeCss/style-desktop.css" />
+			<link rel="stylesheet" href="/homeCss/style-noscript.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+
+        <style>
+            .featured{
+                background-color: black;
+            }
+            .articleImg{
+                background-color: black;
+            }
+            .new-button {
+                display: inline-block;
+                padding-left: 5px;
+                padding-right: 5px; 
+                cursor: pointer;
+                border-radius: 4px;
+                background-color: #009999;
+                font-size: 12px;
+                color: #fff;
+            }
+            input[type="file"] {
+              position: absolute;
+              z-index: -1;
+              top: 6px;
+              left: 0;
+              font-size: 10px;
+              color: rgb(153,153,153);
+            }
+            .button-wrap {
+                position: relative;
+              }
+
+
+
+              @media only screen and (max-width: 1200px) {
+                #sidebar {
+                    display: none;
+                }
+            }
+            @media only screen and (min-width: 1200px) {
+                #carouse {
+                    display: none;
+                }
+            }
+        </style>
+	</head>
+
+    <body class="no-sidebar" >
+
+        <!-- Header -->
+        <div id="header" style="background-color: #005266;height:20%">
+    
+    
+            <br><br>
+            <!-- Inner -->
+                <div class="inner">
+                    <header>
+                        <h2 style="color: white;"><a href="" id="logo"><%=foundRestaurant.name%></a></h2>
+                        <h4 style="color: white;"><a href="" id="logo"><%=foundRestaurant.location.formattedAddress%></a></h4>
+                    </header>
+                </div>
+            
+            <!-- Nav -->
+                <nav id="nav">  
+                    <h2 style="float:left;margin-left:2%;font-family:papyrus;color:tomato"><a href="home.html" id="logo">ZUBEEGO</a></h2>
+                    <ul style="float:right">
+                        <!-- <li>
+                            <a href="">dropdown</a>
+                            <ul>
+                                <li><a href="#">Lorem ipsum dolor</a></li>
+                                <li><a href="#">Magna phasellus</a></li>
+                                <li><a href="#">Etiam dolore nisl</a></li>
+                                <li>
+                                    <a href="">And a submenu &hellip;</a>
+                                    <ul>
+                                        <li><a href="#">Lorem ipsum dolor</a></li>
+                                        <li><a href="#">Phasellus consequat</a></li>
+                                        <li><a href="#">Magna phasellus</a></li>
+                                        <li><a href="#">Etiam dolore nisl</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Veroeros feugiat</a></li>
+                            </ul>
+                        </li> -->
+                        <li ><a href="addplace.html">Add Your Place</a></li>
+                        <li ><a href="right-sidebar.html">Review The Place</a></li>
+                        <li ><a href="profile.html">View Profile</a></li>
+                        <li ><a href="feedback.html">FeedBack</a></li>
+                        <li ><a href="/logout">Logout</a></li>
+                    </ul>
+                </nav>
+    
+        </div>
+    <!-- header end-->
+    
+        
+    
+    <!--review section-->
+    
+    <div class="wrapper style1" style="background-color: black;">
+    
+    <div class="container">
+        <div class="row 200%">
+            <section class="carousel" id="carouse" style="background-color: black;">
+				<div class="reel" style="background-color: black;">
+                    <% foundRestaurant.images.slice().reverse().forEach(function(image){%>
+					<article class="articleImg" style="background-color: black;">
+                        <img src="<%=img.url%>" class="image featured" alt="cd" />                   						
+                    </article>
+                    <%})%>
+                    	
+				</div>
+                <form action="/restaurants/:<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
+                <div style="position: relative;" style="background-color: black;">         
+                    <label class ="new-button" for="addimage" style="font-size:100%;"> Add Image</label>
+                    <input id="addimage" name="imgRestOther" accept="image/*" type="file" multiple>
+                </div>
+                </form>
+			</section>
+
+            <div class="8u" id="content">
+                <article id="main">
+                       
+                    <div class="card" style="padding-left:1%;padding-right:1%;margin-bottom:1%;background-color: #000000">
+                        <div style="padding:1%">
+                            <section class="special">  
+                                <h3 style="color: #cc3399;">Add Your Review</h3>              
+                                <form action="/restaurants/:id" method="POST" enctype="multipart/form-data">
+                                    <div class="d-flex flex-row align-items-start">
+                                        <!-- <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40"> -->
+                                        <textarea class="form-control ml-1 shadow-none textarea"></textarea>
+                                    </div>                                    
+                                    <div class="mt-2 text-right">
+                                        <ul >
+                                        <li style="display:inline;"><div class="col-75" style="position: relative;"> 
+                                            <label class ="new-button" for="imgfile"> Upload Image</label>
+                                            <input id="imgfile" name="imgReview" accept="image/*" type="file" multiple>
+                                            <b><div id="file-upload-filename" style="font-size: 80%;"></div></b>
+                                        </div></li>
+                                        <li style="display:inline;"><button class="btn btn-primary btn-sm shadow-none" type="submit">Post review</button></li>
+                                        <li style="display:inline;"><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></li>
+                                        </ul>
+                                    </div>
+                                </form>
+                            </section>
+                        </div>                                                                       
+                    </div>
+                    <div style="padding-left:1%;padding-right:1%;margin-bottom:1%">
+                        <div style="padding:1%">
+                            <section class="special">                
+                                <h3 style="color: #cc3399;"><a href="location2.html">Location2</a></h3>
+                                <h6>02/02/2002 - 2:00 AM</h6>
+                                <img src="../images/pic01.jpg" alt="" class="image featured mb-2"/>
+                                <p style="color: #009999;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
+                                <ul class="actions mt-2">                                  
+                                  <li style="display:inline;"><a><i class="fa fa-heart-o" aria-hidden="true"></i><i class="fa fa-heart" aria-hidden="true" style="display: none;"></i></a></li>
+                                  <li style="display:inline;"><a><i class="far fa-angry" ></i><i class="fas fa-angry" style="display: none;"></i></a></li>                                  
+                                  <li style="display:inline;" class="like p-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-2"><i class="fa fa-commenting-o"></i><span class="ml-1">Comments</span></li>                                
+                                </ul>
+                            </section>
+                        </div>
+                       
+                    <div  style="padding-left:1%;padding-right:1%;margin-bottom:1%">
+                        <div style="padding:1%">
+                            <section class="special">                
+                                <h3 style="color: #cc3399;"><a href="location2.html">Location2</a></h3>
+                                <h6>02/02/2002 - 2:00 AM</h6>
+                                <br>
+                                <img src="../images/pic01.jpg" alt="" class="image featured"/>
+                                <p > The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
+                                <ul class="actions">                                  
+                                  <li style="display:inline;"><a><i class="fa fa-heart-o" aria-hidden="true"></i><i class="fa fa-heart" aria-hidden="true" style="display: none;"></i></a></li>
+                                  <li style="display:inline;"><a><i class="far fa-angry" ></i><i class="fas fa-angry" style="display: none;"></i></a></li>                                  
+                                  <li style="display:inline;" class="like p-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-3"><i class="fa fa-commenting-o"></i><span class="ml-1">Comments</span></li>                                
+                                </ul>
+                            </section>
+                        </div>
+                        <div id="collapse-3" class="bg-light p-2 collapse" data-parent="#myGroup" style="margin-left: 4%;margin-right:4%;margin-bottom:2%">
+                            <form action="" method="">
+                                <div class="d-flex flex-row align-items-start">
+                                    <!-- <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40"> -->
+                                    <textarea class="form-control ml-1 shadow-none textarea"></textarea>
+                                </div>
+                                <div class="mt-2 text-right">
+                                    <button class="btn btn-primary btn-sm shadow-none" type="button">Post comment</button>
+                                    <button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button>
+                                </div>
+                            </form>
+                            <div>
+                                <section class="special" >                
+                                    <h5 style="color: #cc3399;"><a href="location2.html">cmnt wale ka naam</a></h5>
+                                    <h6>05/05/2002 - 5:00 PM</h6>
+                                    <p style="color: #009999;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>                                    
+                                </section>
+                            </div>
+                        </div>                                             
+                    </div>
+                </article>
+            </div>
+            
+            <div class="4u hidden-xs" id="sidebar">
+                <article>
+                    <form action="/restaurants/:id/image" method = "POST" enctype="multipart/form-data"></form>
+                    <div class="col-75" style="position: relative;float:right">         
+                        
+                                 
+                        <label class ="new-button" for="addimage" style="font-size:100%;"> Add Image</label>
+                        <input id="addimage" name="imgRestOther" accept="image/*" type="file" multiple>
+                            
+                            
+                    </div>  
+                </form>                 						
+                </article>
+                <article>
+                    <a href="#" class="image featured"><img src="../images/pic4.jpg" alt="" /></a>                    						
+                </article>
+            
+                <article>
+                    <a href="#" class="image featured"><img src="../images/pic5.jpg" alt="" /></a>                   						
+                </article>
+                <article>
+                    <a href="#" class="image featured"><img src="../images/pic6.jpg" alt="" /></a>                    						
+                </article>
+            
+                <article>
+                    <a href="#" class="image featured"><img src="../images/pic8.jpg" alt="" /></a>                   						
+                </article>            
+                    
+            </div>
+            
+        </div>        
+    </div>
+    </div>
+    
+    <div class="card container mt-5" style="margin-bottom: 1%;display:none">
+    <div class="d-flex justify-content-center row" >        
+        <div class="col-md-8" >
+            <div class="d-flex flex-column comment-section" id="myGroup" >
+                <div class="bg-white p-2">
+                    <div class="d-flex flex-row user-info"><img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
+                        <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">Marry Andrews</span><span class="date text-black-50">Shared publicly - Jan 2020</span></div>
+                    </div>
+                    <div class="mt-2">
+                        <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-2">
+                    <div class="d-flex flex-row fs-12">
+                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
+                        <div class="like p-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-1"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                        <div class="like p-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-2" href="#collapse-2"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>
+                    </div>
+                </div>
+                <div id="collapse-1" class="bg-light p-2 collapse" data-parent="#myGroup">
+                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40"><textarea class="form-control ml-1 shadow-none textarea"></textarea></div>
+                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="button">Post comment</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></div>
+                </div>
+                <div id="collapse-3" class="bg-light p-2 collapse" data-parent="#myGroup">
+                    <div class="d-flex flex-row align-items-start"><i class="fa fa-facebook border p-3 rounded mr-1"></i><i class="fa fa-twitter border p-3 rounded mr-1"></i><i class="fa fa-linkedin border p-3 rounded mr-1"></i><i class="fa fa-instagram border p-3 rounded mr-1"></i><i class="fa fa-dribbble border p-3 rounded mr-1"></i> <i class="fa fa-pinterest-p border p-3 rounded mr-1"></i> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+<!-- review end-->
+
+<!-- Announcements -->
+<div class="card wrapper style1" style="background-color: black;margin-top:1%;height:fit-content; width:auto;padding-left:2%;padding-right:2%;padding-bottom:2%;color:#005266">
+    <div class="container" >
+        <article id="main" class="special">
+            <header>
+				<h2><a href="announcements.html">Announcements</a></h2>							
+			</header>   
+            <!-- <a href="#" class="image featured"><img src="images/pic06.jpg" alt="" /></a> -->
+            
+            <div class="container">
+                <div class="row">
+                    <div class="6u " style="padding-left:10%;padding-right:5%">
+                        <section class="special">                
+                            <h3 style="color: #cc3399;"><a href="location2.html">Location2</a></h3>
+                            <h5><a href="location2.html">Username1</a></h5>
+                            <br>
+                            <p style="color: #009999;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
+                            <ul class="actions">
+                            <li><a><i class="far fa-angry" ></i></a></li>
+                            <li><a><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                            <li style="float: right;color: #cc3399;">valid till: 12/05/2021 </li>
+                            <!-- <a><i class="fa fa-heart" aria-hidden="true"></i></a> -->									
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="6u " style="padding-left:10%;padding-right:5%">
+                        <section class="special">                
+                            <h3 style="color: #cc3399;"><a href="location2.html">Location2</a></h3>
+                            <h5><a href="location2.html">Username1</a></h5>
+                            <br>
+                            <p style="color: #009999;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
+                            <ul class="actions">
+                            <li><a><i class="far fa-angry" ></i></a></li>
+                            <li><a><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                            <li style="float: right;color: #cc3399;">valid till: 12/05/2021 </li>
+                            <!-- <a><i class="fa fa-heart" aria-hidden="true"></i></a> -->									
+                            </ul>
+                        </section>
+                    </div>
+					
+                </div>
+            </div>						
+        </article>					
+    </div>
+</div>    
+   
+    
+    <!-- Footer -->
+            <div id="footer" style="margin-top: 1%;">
+                <div class="container">
+                    
+                    <div class="row">
+                        <div class="12u">
+                            
+                            <!-- Contact -->
+                                <section class="contact">
+                                    <header>
+                                        <h3>Nisl turpis nascetur interdum?</h3>
+                                    </header>
+                                    <p>Urna nisl non quis interdum mus ornare ridiculus egestas ridiculus lobortis vivamus tempor aliquet.</p>
+                                    <ul class="icons">
+                                        <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                                        <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                                        <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+                                        <li><a href="#" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>
+                                        <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+                                        <li><a href="#" class="icon fa-linkedin"><span class="label">Linkedin</span></a></li>
+                                    </ul>
+                                </section>
+                            
+                            <!-- Copyright -->
+                                <div class="copyright">
+                                    <ul class="menu">
+                                        <li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                                    </ul>
+                                </div>
+                            
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+    
+
+            <script>
+                var input = document.getElementById( 'imgfile' );
+                var infoArea = document.getElementById( 'file-upload-filename' );
+            
+                input.addEventListener( 'change', showFileName );
+            
+                function showFileName( event ) {
+                
+                // the change event gives us the input it occurred in 
+                var input = event.srcElement;
+                
+                // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+                var fileName = input.files[0].name;
+                
+                // use fileName however fits your app best, i.e. add it into a div
+                infoArea.textContent = fileName;
+                }
+            </script>
+            
+    </body>
+    
+</html>

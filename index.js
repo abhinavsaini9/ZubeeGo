@@ -102,11 +102,11 @@ app.get("/landing", function (req, res) {
     res.render("landing");
 });
 
-app.get("/register", function (req, res) {
-    console.log("Register page");
-    res.render("register");
+// app.get("/register", function (req, res) {
+//     console.log("Register page");
+//     res.render("register");
 
-});
+// });
 
 app.post("/register", function (req, res) {
     var newUser = new User({ username: req.body.username, email: req.body.email});
@@ -125,11 +125,11 @@ app.post("/register", function (req, res) {
     });
 });
 
-app.get("/login", function (req, res) {
-    console.log("Login page");
-    res.render("login");
+// app.get("/login", function (req, res) {
+//     console.log("Login page");
+//     res.render("login");
 
-});
+// });
 
 app.post("/login", passport.authenticate("local", {
     failureFlash: true,
@@ -214,6 +214,7 @@ app.get("/announcements/:id/edit",checkAnnouncementOwnership,function(req,res){
         res.render("edit_announcement", { Announcement: founddiscussion });
     });
 })
+
 app.put("/announcements/:id", checkAnnouncementOwnership, async (req, res,next) => {
     
     await Announcement.findByIdAndUpdate(req.params.id, {text: req.body.text,address: req.body.address}, function (err,updatedAnnouncement) {
@@ -281,8 +282,8 @@ app.get("/showrestaurants",isLoggedIn,function(req,res){
             console.log(err);
         }
         else{
-            // console.log(foundAnnouncement[0].announcedBy);
-            res.render("announcement",{Announcements:foundRestaurant})
+            // console.log(foundRestaurant);
+            res.render("restaurantMap",{Restaurant:foundRestaurant})
         }
     })
     
@@ -331,7 +332,7 @@ app.get("/restaurants/:id", isLoggedIn, async (req, res, next) => {
                 if (err) {
                     console.log(err);
                 }
-                else res.render("restaurants_show");
+                else res.render("restaurants_show",{foundRestaurant: foundRestaurant});
             })
 
         })}
