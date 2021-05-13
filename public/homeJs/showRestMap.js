@@ -36,11 +36,12 @@ var Current = new mapboxgl.Marker()
 .addTo(map);
 
 console.log("ehe");
-console,log(Restaurants);
-Restaurants.forEach(resta => {
+console.log(Restrants);
+Restrants.forEach(resta => {
+    console.log(resta);
     console.log(resta.location.coordinates);
-    var Current = new mapboxgl.Marker()
-     .setLngLat([resta.location.coordinates])
+    var Current1 = new mapboxgl.Marker()
+     .setLngLat(resta.location.coordinates)
      .addTo(map);
  });
 

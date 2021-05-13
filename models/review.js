@@ -2,8 +2,8 @@ var mongoose= require("mongoose");
 
 var reviewSchema= mongoose.Schema({
     text:{
-       type: String,
-       required: true
+       type: String
+       
     },
     noOfLikes:{
         type: Number,

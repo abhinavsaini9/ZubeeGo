@@ -15,6 +15,7 @@
     <script src="/homeJs/skel.min.js"></script>
     <script src="/homeJs/skel-layers.min.js"></script>
     <script src="/homeJs/init.js"></script>
+    <!-- <script src="/getDistance.js"></script> -->
     
     <noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
@@ -100,6 +101,8 @@
 </head>
 <body>
 
+
+
     <!-- Header -->
         <div id="header" style="background-color: #005266;">
 
@@ -158,7 +161,8 @@
         <div class="container">
           <div class="row">
             <% Announcements.slice().reverse().forEach(function(announcement){%>
-              <%if(getDistanceFromLatLonInKm())%>
+            
+              
             <div class="6u card" style="padding-left:10%;padding-right:5%">
               <section class="special">                
                 <h3 style="float: left;color: #cc3399;"><a href="location2.html"><%=announcement.location.formattedAddress%></a></h3>
@@ -183,7 +187,8 @@
                 </ul>
 
               </section>
-            </div> 
+            </div>
+           
             <%})%>
           </div>
         </div> 
@@ -227,24 +232,8 @@
   </div>
 </div>
 
-<script>
-  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2-lat1);  // deg2rad below
-    var dLon = deg2rad(lon2-lon1); 
-    var a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c; // Distance in km
-    return d;
-  }
-  function deg2rad(deg) {
-    return deg * (Math.PI/180)
-  }
-</script>
+
+
 
 </body>
 </html>

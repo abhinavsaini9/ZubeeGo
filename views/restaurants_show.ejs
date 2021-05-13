@@ -25,12 +25,12 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://kit.fontawesome.com/f6c224efb3.js" crossorigin="anonymous"></script>
 		<noscript>
-			<link rel="stylesheet" href="/homeCss/skel.css" />
-			<link rel="stylesheet" href="/homeCss/review.css" />
-			<link rel="stylesheet" href="/homeCss/table.css" />
-			<link rel="stylesheet" href="/homeCss/style.css" />
-			<link rel="stylesheet" href="/homeCss/style-desktop.css" />
-			<link rel="stylesheet" href="/homeCss/style-noscript.css" />
+			<link rel="stylesheet" href="homeCss/skel.css" />
+			<link rel="stylesheet" href="homeCss/review.css" />
+			<link rel="stylesheet" href="homeCss/table.css" />
+			<link rel="stylesheet" href="homeCss/style.css" />
+			<link rel="stylesheet" href="homeCss/style-desktop.css" />
+			<link rel="stylesheet" href="homeCss/style-noscript.css" />
 		</noscript>
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 
@@ -131,6 +131,14 @@
     
     <div class="container">
         <div class="row 200%">
+            <form action="/restaurants/<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
+                <div class="col-75" style="position: relative;float:right">                  
+                    <label class ="new-button" for="imgfile" style="font-size:100%;"> Add Image</label>
+                    <input id="imgfile" name="imgRestOther" accept="image/*" type="file" multiple> 
+                    <b><div id="file-upload-filename"></div></b>
+                </div>
+                <button type="submit">Submit</button>  
+            </form> 
             <section class="carousel" id="carouse" style="background-color: black;">
 				<div class="reel" style="background-color: black;">
                     <% foundRestaurant.images.slice().reverse().forEach(function(image){%>
@@ -140,15 +148,18 @@
                     <%})%>
                     	
 				</div>
-                <form action="/restaurants/<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
+                <!-- <form action="/restaurants/<%=foundRestaurant.id%>/imageLap" method = "POST" enctype="multipart/form-data">
                 <div style="position: relative;" style="background-color: black;">         
-                    <label class ="new-button" for="addimage" style="font-size:100%"> Add Image</label>
-                    <input id="addimage" name="imgRestOther" accept="image/*" type="file" multiple>
-                    <b><div id="file-upload-filename"></div></b>
+                    <label class ="new-button" for="imgfile2" style="font-size:100%"> Add Image</label>
+                    <input id="imgfile2" name="imgRestOther2" accept="image/*" type="file" multiple>
+                    <b><div id="file-upload-filename2"></div></b>
                 </div>
                 <button type="submit">Submit</button>
-                </form>
+                </form> -->
+                
 			</section>
+
+          
 
             <div class="8u" id="content">
                 <article id="main">
@@ -160,7 +171,7 @@
                                 <form action="/restaurants/<%=foundRestaurant.id%>" method="POST" enctype="multipart/form-data">
                                     <div class="d-flex flex-row align-items-start">
                                         <!-- <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40"> -->
-                                        <textarea class="form-control ml-1 shadow-none textarea"></textarea>
+                                        <textarea class="form-control ml-1 shadow-none textarea" name="text"></textarea>
                                     </div>                                    
                                     <div class="mt-2 text-right">
                                         <ul >
@@ -198,7 +209,7 @@
                                 <h3 style="color: #cc3399;"><a href="location2.html"><%=review.author.username%></a></h3>
                                 <h6><%=review.time1%></h6>
                                 <br>
-                                <%if(review.image.length){%>
+                                <%if(review.images.length){%>
                                 <img src="<%=review.images[0].url%>" alt="" class="image featured"/>
                                 <%}%>
                                 <p><%=review.text%></p>
@@ -218,8 +229,9 @@
                 <article>
                     <form action="/restaurants/<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
                     <div class="col-75" style="position: relative;float:right">                  
-                        <label class ="new-button" for="addimage" style="font-size:100%;"> Add Image</label>
-                        <input id="addimage" name="imgRestOther" accept="image/*" type="file" multiple>     
+                        <label class ="new-button" for="imgfile" style="font-size:100%;"> Add Image</label>
+                        <input id="imgfile" name="imgRestOther" accept="image/*" type="file" multiple> 
+                        <b><div id="file-upload-filename"></div></b>
                     </div>
                     <button type="submit">Submit</button>  
                 </form>                 						
@@ -322,9 +334,11 @@
     
 
             <script>
-                var input = document.getElementById( 'addimage' );
+                var input = document.getElementById( 'imgfile' );
                 var infoArea = document.getElementById( 'file-upload-filename' );
-            
+                console.log(input)
+                console.log("cdnkn knxm")
+                console.log(infoArea)
                 input.addEventListener( 'change', showFileName );
             
                 function showFileName( event ) {
@@ -339,6 +353,25 @@
                 infoArea.textContent = fileName;
                 }
             </script>
+<!-- 
+<script>
+    var input = document.getElementById( 'imgfile2' );
+    var infoArea = document.getElementById( 'file-upload-filename2' );
+
+    input.addEventListener( 'change', showFileName );
+
+    function showFileName( event ) {
+    
+    // the change event gives us the input it occurred in 
+    var input = event.srcElement;
+    
+    // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    var fileName = input.files[0].name;
+    
+    // use fileName however fits your app best, i.e. add it into a div
+    infoArea.textContent = fileName;
+    }
+</script> -->
             
     </body>
     

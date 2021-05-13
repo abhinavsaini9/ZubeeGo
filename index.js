@@ -342,49 +342,83 @@ app.get("/restaurants/:id", isLoggedIn, async (req, res, next) => {
 
 app.post("/restaurants/:id/image",isLoggedIn,upload.array('imgRestOther'),function(req,res){
     
-    Restaurant.findById(req.params.id,async function(err,foundRestaurant){
+    Restaurant.findById(req.params.id,async (err,foundRestaurant,next)=>{
         if(err){
             console.log(err);
             next(new AppError());
         }
         else{
+            console.log(req.files);
             const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
-            console.log(foundRestaurant);
+            // console.log(foundRestaurant);
             foundRestaurant.images.push(...imgs);
             console.log(imgs);
+            foundRestaurant.address = foundRestaurant.location.formattedAddress;
             await foundRestaurant.save();
-            console.log(foundRestaurant);
+            // console.log(foundRestaurant);
             res.redirect("/restaurants/"+req.params.id);
         }
     })
 })
-
+app.post("/restaurants/:id/imageLap",isLoggedIn,upload.array('imgRestOther2'),function(req,res){
+    
+    Restaurant.findById(req.params.id,async (err,foundRestaurant,next)=>{
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            console.log(req.files);
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            // console.log(foundRestaurant);
+            foundRestaurant.images.push(...imgs);
+            console.log(imgs);
+            foundRestaurant.address = foundRestaurant.location.formattedAddress;
+            await foundRestaurant.save();
+            // console.log(foundRestaurant);
+            res.redirect("/restaurants/"+req.params.id);
+        }
+    })
+})
 app.post("/restaurants/:id",isLoggedIn,upload.array('imgReview'),async(req, res,next)=>{
     try{
-      var text = req.body.text;
-      var newReview = new Review({text:text});
-      newReview.images = req.files.map(f =>({url: f.path,filename: f.filename}));
-      await Review.create(newReview,function(err,newReview){
-          if(err){
-              console.log(err);
-              next(new AppError());
-          }
-          else{
-             Restaurant.findById(req.params.id).exec(function(err,foundRestaurant){
-                if(err){
-                    console.log(err);
-              next(new AppError());
-                }
-                else{
-                newReview.save();
-                foundRestaurant.reviews.push(newReview);
-                foundRestaurant.save();
-                res.redirect("/restaurants/:"+req.params.id);}
-            })
-          }
-      })
-      
-    }
+        console.log("Number"+req.params.id)
+        Restaurant.findById(req.params.id).exec(function(err,foundRestaurant){
+            if(err){
+                console.log(err);
+                next(new AppError());
+            }
+            else{
+                var text = req.body.text;
+                var newReview = {text:text};
+                
+                Review.create(newReview,async(err,myreview,next)=>{
+                    if(err){
+                        console.log(err);
+                        next(new AppError());
+                    }
+                    else{
+                        myreview.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+                       console.log(myreview);
+                console.log(foundRestaurant);
+                 const isReviewsaved = await myreview.save();
+                  console.log("c"+isReviewsaved);
+                console.log(foundRestaurant.reviews);
+                console.log("cjdnckndklnvm kdmvf vrv-------------------------------");
+                foundRestaurant.reviews.push(myreview);
+                console.log(foundRestaurant);
+                foundRestaurant.address = foundRestaurant.location.formattedAddress;
+                const issave = await foundRestaurant.save();
+                console.log("d"+issave);
+                console.log(foundRestaurant.reviews);
+                res.redirect("/restaurants/"+req.params.id);}
+                       
+            })}
+     
+                
+                
+            })}
+          
     catch(e){
         next(e);
     }
