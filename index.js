@@ -17,6 +17,7 @@ const Restaurant = require("./models/restaurant");
 const AppError = require("./AppError");
 const Review = require("./models/review");
 const Comment = require("./models/comment");
+const Offer = require("./models/offer");
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
@@ -53,6 +54,7 @@ app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.use("/public",express.static("public"));
 app.use(methodoverride("_method"));
 
 
@@ -108,6 +110,8 @@ app.get("/landing", function (req, res) {
 
 // });
 
+
+
 app.post("/register", function (req, res) {
     var newUser = new User({ username: req.body.username, email: req.body.email});
 
@@ -142,6 +146,11 @@ app.post("/login", passport.authenticate("local", {
     res.redirect(redirectUrl);
     
 });
+
+//viewProfile
+app.get("/viewprofile",isLoggedIn,function(req,res){
+    res.render("profile");
+})
 
 
 app.get("/logout", function (req, res) {
@@ -272,6 +281,34 @@ const storage = new CloudinaryStorage({
 const upload = multer({storage});
 app.get("/add_restaurants",isLoggedIn,function(req,res){
     res.render("addHotel");
+})
+
+//offer
+app.get("/restaurant/:id/offer",isLoggedIn,function(req,res){
+    res.render("addoffer");
+})
+
+app.post("/restaurant/:id/offer",isLoggedIn,upload.array('imgOffer'),function(req,res){
+    Restaurant.findById(req.params.id,async (err,foundRestaurant,next)=>{
+        var text = req.body.text;
+        const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+        var newOffer = {text:text};
+        Offer.create(newOffer,async(err,myoffer,next)=>{
+            if(err){
+                console.log(err);
+
+            }
+            else{
+                myoffer.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+                const x = await myoffer.save();
+                foundRestaurant.offers.push(myoffer);
+                foundRestaurant.address = foundRestaurant.location.formattedAddress;
+                const y = await foundRestaurant.save();
+                res.redirect("/restaurants/"+req.params.id);
+            }
+        })
+        
+    })
 })
 
 app.get("/showrestaurants",isLoggedIn,function(req,res){
