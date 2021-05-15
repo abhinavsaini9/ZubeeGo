@@ -145,7 +145,7 @@
                         <div class="media align-items-end profile-head">
                             
                             <div class="media-body mb-5 text-white">
-                                <h2 class="mt-0 mb-0" style="padding-bottom: 1.2rem;">Bhadu Bhau</h2>
+                                <h2 class="mt-0 mb-0" style="padding-bottom: 1.2rem;"><%=foundUser.username%></h2>
                             </div>
                         </div>
                     </div>
@@ -171,24 +171,17 @@
                         </div>
                     </div>
                     <div class="px-4 py-3">
-                        <h5 class="mb-0">Hotels added</h5>
+                        <h5 class="mb-0">Restuarants added</h5>
                         <div class="p-4 rounded shadow-sm bg-light">
                             <section class="carousel" >
                                 <div class="reel" >
+                                    <% foundUser.restAddedByMe.slice().reverse().forEach(function(rest){%>
+                                    <% if(rest.images.length){ %>
                                     <article class="articleImg" >
-                                        <a href="#" class="image featured"><img src="../images/pic4.jpg" alt="" /></a>                    						
+                                        <a href="#" class="image featured"><img src="<%=rest.images[0].url%>" alt="" /></a>                    						
                                     </article>
-                                
-                                    <article class="articleImg" >
-                                        <a href="#" class="image featured"><img src="../images/pic5.jpg" alt="" /></a>                   						
-                                    </article>
-                                    <article class="articleImg" >
-                                        <a href="#" class="image featured"><img src="../images/pic6.jpg" alt="" /></a>                    						
-                                    </article>
-                                
-                                    <article class="articleImg" >
-                                        <a href="#" class="image featured"><img src="../images/pic8.jpg" alt="" /></a>                   						
-                                    </article>	
+                                    <%}%>
+                                    <%})%>                                    	
                                 </div>
                                 
                             </section>
@@ -242,24 +235,6 @@
             </div>
     
 
-            <script>
-                var input = document.getElementById( 'imgfile' );
-                var infoArea = document.getElementById( 'file-upload-filename' );
-            
-                input.addEventListener( 'change', showFileName );
-            
-                function showFileName( event ) {
-                
-                // the change event gives us the input it occurred in 
-                var input = event.srcElement;
-                
-                // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
-                var fileName = input.files[0].name;
-                
-                // use fileName however fits your app best, i.e. add it into a div
-                infoArea.textContent = fileName;
-                }
-            </script>
             
     </body>
     

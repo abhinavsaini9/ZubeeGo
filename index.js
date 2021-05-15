@@ -149,7 +149,18 @@ app.post("/login", passport.authenticate("local", {
 
 //viewProfile
 app.get("/viewprofile",isLoggedIn,function(req,res){
-    res.render("profile");
+    console.log("hello");
+    console.log(req.user.id);
+    User.findById(req.user.id).populate("restAddedByMe").exec(async (err, foundUser, next) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log(foundUser);
+            res.render("profile",{foundUser:foundUser});
+
+        }
+    })
 })
 
 
