@@ -296,13 +296,13 @@ app.get("/add_restaurants",isLoggedIn,function(req,res){
 
 //offer
 app.get("/restaurant/:id/offer",isLoggedIn,function(req,res){
-    res.render("addoffer");
+    res.render("addoffer",{foundId:req.params.id});
 })
 
 app.post("/restaurant/:id/offer",isLoggedIn,upload.array('imgOffer'),function(req,res){
     Restaurant.findById(req.params.id,async (err,foundRestaurant,next)=>{
         var text = req.body.text;
-        const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+        
         var newOffer = {text:text};
         Offer.create(newOffer,async(err,myoffer,next)=>{
             if(err){
@@ -312,9 +312,11 @@ app.post("/restaurant/:id/offer",isLoggedIn,upload.array('imgOffer'),function(re
             else{
                 myoffer.images = req.files.map(f =>({url: f.path,filename: f.filename}));
                 const x = await myoffer.save();
+                console.log(x);
                 foundRestaurant.offers.push(myoffer);
                 foundRestaurant.address = foundRestaurant.location.formattedAddress;
                 const y = await foundRestaurant.save();
+                console.log(y);
                 res.redirect("/restaurants/"+req.params.id);
             }
         })
@@ -370,7 +372,7 @@ app.post("/restaurants",isLoggedIn,upload.array('imgRest'),function(req,res){
 
 app.get("/restaurants/:id", isLoggedIn, async (req, res, next) => {
         try{
-        Restaurant.findById(req.params.id).populate("reviews").exec(async (err, foundRestaurant, next) => {
+        await Restaurant.findById(req.params.id).populate("reviews").populate("offers").exec(async (err, foundRestaurant, next) => {
             if (err) {
                 console.log(err);
                 next(new AppError());

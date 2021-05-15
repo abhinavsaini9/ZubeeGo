@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AddAnnounecements</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script src="/homeJs/jquery.min.js"></script>
+    <script src="/homeJs/jquery.dropotron.min.js"></script>
+    <script src="/homeJs/jquery.scrolly.min.js"></script>
+    <script src="/homeJs/jquery.onvisible.min.js"></script>
+    <script src="/homeJs/skel.min.js"></script>
+    <script src="/homeJs/skel-layers.min.js"></script>
+    <script src="/homeJs/init.js"></script>
+    
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+        <link rel="stylesheet" href="/homeCss/skel.css" />
+        <link rel="stylesheet" href="/homeCss/table.css" />
+        <link rel="stylesheet" href="/homeCss/style.css" />  
+        <link rel="stylesheet" href="/homeCss/style-desktop.css" />
+        <link rel="stylesheet" href="/homeCss/style-noscript.css" />
+    </noscript>
+    <style>
+    * {
+    box-sizing: border-box;
+    }
+
+    input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    
+    }
+
+    label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+    }
+
+    input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+    }
+
+    input[type=submit]:hover {
+    background-color: #45a049;
+    }
+
+    .containers {
+    border-radius: 10px;
+    border-color: black;
+    
+    padding: 20px;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    
+    }
+
+    .col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+    }
+
+    .col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    text-decoration-color: black;
+    }
+
+    /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 600px) {
+    .col-25, .col-75, input[type=submit] {
+        width: 100%;
+        margin-top: 0;
+    }
+    }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+        <div id="header" style="background-color: #005266;height:20%">
+
+            <br><br>
+            <!-- Inner -->
+                <div class="inner">
+                    <header>
+                        <h2 style="color: white;"><a href="" id="logo">ADD OFFER</a></h2>
+                    </header>
+                </div>
+            
+            <!-- Nav -->
+                <nav id="nav">
+                    <h2 style="float:left;margin-left:2%;font-family:papyrus;color:tomato"><a href="/" id="logo">ZUBEEGO</a></h2>
+                    <ul style="float:right">
+                        <!-- <li>
+                            <a href="">dropdown</a>
+                            <ul>
+                                <li><a href="#">Lorem ipsum dolor</a></li>
+                                <li><a href="#">Magna phasellus</a></li>
+                                <li><a href="#">Etiam dolore nisl</a></li>
+                                <li>
+                                    <a href="">And a submenu &hellip;</a>
+                                    <ul>
+                                        <li><a href="#">Lorem ipsum dolor</a></li>
+                                        <li><a href="#">Phasellus consequat</a></li>
+                                        <li><a href="#">Magna phasellus</a></li>
+                                        <li><a href="#">Etiam dolore nisl</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Veroeros feugiat</a></li>
+                            </ul>
+                        </li> -->
+                        <li ><a href="/add_restaurants">Add Restaurant</a></li>
+                        <li ><a href="/showrestaurants">Search Location</a></li>
+                        <li ><a href="/announcements">Announcements</a></li>
+                        <li ><a href="/viewprofile">View Profile</a></li>
+                        <li ><a href="/feedback">FeedBack</a></li>
+                        <li ><a href="/logout">Logout</a></li>
+                    </ul>
+                </nav>
+
+        </div>
+  <!--Add Announcements -->
+
+
+    <div class="container" style="background-color: black;height:60%; width:auto;padding-left:2%;padding-right:2%;padding-bottom:2%;color:#005266">
+      <article id="main" class="special">        
+        <!-- <a href="#" class="image featured"><img src="images/pic06.jpg" alt="" /></a> -->
+        <div class="container">
+          <!-- <h2 style="text-align: center;color: #008000;">ADD ANNOUNCEMENTS </h2> -->
+          <br>
+          <form action="/restaurant/<%=foundId%>/offer" style="margin: 2% 10% 2% 10%;" method="POST" enctype="multipart/form-data">            
+            <div class="row">
+                <div class="col-25">
+                    <label for="announce" style="font-size: 125%;color: #cc3399;">Image</label>
+                </div>
+                <div class="col-75" style="position: relative;">                      
+                    <div class=”button-wrap”>
+                        <label class ="new-button" for="imgoffer"> Upload Image</label>
+                        <input id="imgoffer" name="imgOffer" accept="image/*" type="file" multiple>
+                        <b><div id="file-upload-filename-offer"></div></b>
+                    <div>  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                  <label for="announce" style="font-size: 125%;color: #cc3399;">Details</label>
+                </div>
+                <div class="col-75">
+                  <textarea id="announce" name="text" placeholder="Details.." style="height:200px"></textarea>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div style="float: right;" class="col-25" >
+                    <input type="submit" value="Submit">
+                </div>
+            </div>
+          </form>
+        </div>        
+      </article>					
+    </div>
+ 
+
+<!-- Footer -->
+<div id="footer" style="height: 20%;">
+  <div class="container">
+   
+    <div class="row">
+      <div class="12u">
+        
+        <!-- Contact -->
+          <section class="contact">
+            <header>
+              <h3>Nisl turpis nascetur interdum?</h3>
+            </header>
+            <p>Urna nisl non quis interdum mus ornare ridiculus egestas ridiculus lobortis vivamus tempor aliquet.</p>
+            <ul class="icons">
+              <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+              <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+              <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+              <li><a href="#" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>
+              <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+              <li><a href="#" class="icon fa-linkedin"><span class="label">Linkedin</span></a></li>
+            </ul>
+          </section>
+        
+        <!-- Copyright -->
+          <div class="copyright">
+            <ul class="menu">
+              <li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+            </ul>
+          </div>
+        
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+<script>
+    var input = document.getElementById( 'imgoffer' );
+    var infoArea = document.getElementById( 'file-upload-filename-offer' );
+
+    input.addEventListener( 'change', showFileName );
+
+    function showFileName( event ) {
+    
+    // the change event gives us the input it occurred in 
+    var input = event.srcElement;
+    
+    // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    var fileName = input.files[0].name;
+    
+    // use fileName however fits your app best, i.e. add it into a div
+    infoArea.textContent = fileName;
+    }
+</script>
+
+</body>
+</html>

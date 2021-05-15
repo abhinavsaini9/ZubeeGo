@@ -47,7 +47,14 @@ reviews:[
     type:mongoose.Schema.Types.ObjectId,
     ref:"Review"
   }
+],
+offers:[
+  {
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Offer"
+  }
 ]
+
 });
 
 // Geocode & create location

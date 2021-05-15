@@ -243,40 +243,22 @@
     <div class="container" >
         <article id="main" class="special">
             <header>
-				<h2><a href="announcements.html">Announcements</a></h2>							
+				<h2>Offers</h2>							
 			</header>   
             <!-- <a href="#" class="image featured"><img src="images/pic06.jpg" alt="" /></a> -->
             
             <div class="container">
                 <div class="row">
+                    <% foundRestaurant.offers.slice().reverse().forEach(function(Offer){%>
                     <div class="6u " style="padding-left:10%;padding-right:5%">
-                        <section class="special">                
-                            <h3 style="color: #cc3399;"><a href="location2.html">Location2</a></h3>
-                            <h5><a href="location2.html">Username1</a></h5>
+                        <section class="special">     
                             <br>
-                            <p style="color: #009999;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
-                            <ul class="actions">
-                            <li><a><i class="far fa-angry" ></i></a></li>
-                            <li><a><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                            <li style="float: right;color: #cc3399;">valid till: 12/05/2021 </li>
-                            <!-- <a><i class="fa fa-heart" aria-hidden="true"></i></a> -->									
-                            </ul>
+                            <img src="<%=Offer.images[0].url%>" style="height:80%;width:80%;">
+                            <p style="color: #009999;"> <%=Offer.text%></p>
+                            
                         </section>
                     </div>
-                    <div class="6u " style="padding-left:10%;padding-right:5%">
-                        <section class="special">                
-                            <h3 style="color: #cc3399;"><a href="location2.html">Location2</a></h3>
-                            <h5><a href="location2.html">Username1</a></h5>
-                            <br>
-                            <p style="color: #009999;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
-                            <ul class="actions">
-                            <li><a><i class="far fa-angry" ></i></a></li>
-                            <li><a><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                            <li style="float: right;color: #cc3399;">valid till: 12/05/2021 </li>
-                            <!-- <a><i class="fa fa-heart" aria-hidden="true"></i></a> -->									
-                            </ul>
-                        </section>
-                    </div>
+                    <%})%>                    
 					
                 </div>
             </div>						

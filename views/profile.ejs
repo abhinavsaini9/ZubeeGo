@@ -178,7 +178,13 @@
                                     <% foundUser.restAddedByMe.slice().reverse().forEach(function(rest){%>
                                     <% if(rest.images.length){ %>
                                     <article class="articleImg" >
-                                        <a href="#" class="image featured"><img src="<%=rest.images[0].url%>" alt="" /></a>                    						
+                                        <a href="/restaurants/<%=rest.id%>" class="image featured"><img src="<%=rest.images[rest.images.length -1].url%>" alt="" /></a>     
+                                        <header>
+                                            <h3><a href="/restaurants/<%=rest.id%>"><%=rest.name%></a></h3>
+                                        </header>     
+                                        <ul class="actions">
+                                            <li><a href="/restaurant/<%=rest.id%>/offer" class="button alt">Add Offer</a></li>
+                                        </ul>          						
                                     </article>
                                     <%}%>
                                     <%})%>                                    	
