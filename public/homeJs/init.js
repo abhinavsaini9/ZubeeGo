@@ -27,12 +27,12 @@
 	skel.init({
 		reset: 'full',
 		breakpoints: {
-			'global':	{ range: '*', href: 'homeCss/style.css', containers: 1400, grid: { gutters: 48 } },
-			'wide':		{ range: '-1680', href: 'homeCss/style-wide.css', containers: 1200 },
-			'normal':	{ range: '-1280', href: 'homeCss/style-normal.css', containers: '100%', grid: { gutters: 36 } },
-			'narrow':	{ range: '-960', href: 'homeCss/style-narrow.css', grid: { gutters: 32 } },
-			'narrower': { range: '-840', href: 'homeCss/style-narrower.css', containers: '100%!', grid: { collapse: true } },
-			'mobile':	{ range: '-736', href: 'homeCss/style-mobile.css', grid: { gutters: 20 }, viewport: { scalable: false } }
+			'global':	{ range: '*', href: '/public/homeCss/style.css', containers: 1400, grid: { gutters: 48 } },
+			'wide':		{ range: '-1680', href: '/public/homeCss/style-wide.css', containers: 1200 },
+			'normal':	{ range: '-1280', href: '/public/homeCss/style-normal.css', containers: '100%', grid: { gutters: 36 } },
+			'narrow':	{ range: '-960', href: '/public/homeCss/style-narrow.css', grid: { gutters: 32 } },
+			'narrower': { range: '-840', href: '/public/homeCss/style-narrower.css', containers: '100%!', grid: { collapse: true } },
+			'mobile':	{ range: '-736', href: '/public/homeCss/style-mobile.css', grid: { gutters: 20 }, viewport: { scalable: false } }
 		},
 		plugins: {
 			layers: {

@@ -25,12 +25,12 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://kit.fontawesome.com/f6c224efb3.js" crossorigin="anonymous"></script>
 		
-        <link rel="stylesheet" href="/public/homeCss/style-noscript.css" />
-        
-			<link rel="stylesheet" href="/public/homeCss/skel.css" />
-			
-			<link rel="stylesheet" href="/public/homeCss/style.css" />
-			<link rel="stylesheet" href="/public/homeCss/style-desktop.css" />
+        <noscript>    
+        <link rel="stylesheet" href="/public/homeCss/skel.css" />        
+        <link rel="stylesheet" href="/public/homeCss/style.css" />
+        <link rel="stylesheet" href="/public/homeCss/style-noscript.css" />    
+        </noscript>
+        <!-- <link rel="stylesheet" href="/public/homeCss/style-desktop.css" /> -->
 			
 	  
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
@@ -113,10 +113,11 @@
                                 <li><a href="#">Veroeros feugiat</a></li>
                             </ul>
                         </li> -->
-                        <li ><a href="addplace.html">Add Your Place</a></li>
-                        <li ><a href="right-sidebar.html">Review The Place</a></li>
-                        <li ><a href="profile.html">View Profile</a></li>
-                        <li ><a href="feedback.html">FeedBack</a></li>
+                        <li ><a href="/add_restaurants">Add Restaurant</a></li>
+                        <li ><a href="/showrestaurants">Search Location</a></li>
+                        <li ><a href="/announcements">Announcements</a></li>
+                        <li ><a href="/viewprofile">View Profile</a></li>
+                        <li ><a href="/feedback">FeedBack</a></li>
                         <li ><a href="/logout">Logout</a></li>
                     </ul>
                 </nav>
@@ -132,14 +133,14 @@
     
     <div class="container">
         <div class="row 200%">
-            <form action="/restaurants/<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
+            <!-- <form action="/restaurants/<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
                 <div class="col-75" style="position: relative;float:right">                  
                     <label class ="new-button" for="imgfile" style="font-size:100%;"> Add Image</label>
                     <input id="imgfile" name="imgRestOther" accept="image/*" type="file" multiple> 
                     <b><div id="file-upload-filename"></div></b>
                 </div>
                 <button type="submit">Submit</button>  
-            </form> 
+            </form>  -->
             <section class="carousel" id="carouse" style="background-color: black;">
 				<div class="reel" style="background-color: black;">
                     <% foundRestaurant.images.slice().reverse().forEach(function(image){%>
@@ -149,14 +150,14 @@
                     <%})%>
                     	
 				</div>
-                <!-- <form action="/restaurants/<%=foundRestaurant.id%>/imageLap" method = "POST" enctype="multipart/form-data">
+                <form action="/restaurants/<%=foundRestaurant.id%>/imagemob" method = "POST" enctype="multipart/form-data">
                 <div style="position: relative;" style="background-color: black;">         
-                    <label class ="new-button" for="imgfile2" style="font-size:100%"> Add Image</label>
-                    <input id="imgfile2" name="imgRestOther2" accept="image/*" type="file" multiple>
-                    <b><div id="file-upload-filename2"></div></b>
+                    <label class ="new-button" for="imgfile1" style="font-size:100%"> Add Image</label>
+                    <input id="imgfile1" name="imgRestOther1" accept="image/*" type="file" multiple>
+                    <b><div id="file-upload-filename1"></div></b>
                 </div>
                 <button type="submit">Submit</button>
-                </form> -->
+                </form>
                 
 			</section>
 
@@ -189,20 +190,7 @@
                             </section>
                         </div>                                                                       
                     </div>
-                    <!-- <div style="padding-left:1%;padding-right:1%;margin-bottom:1%">
-                        <div style="padding:1%">
-                            <section class="special">                
-                                <h3 style="color: #cc3399;"><a href="location2.html">Location2</a></h3>
-                                <h6>02/02/2002 - 2:00 AM</h6>
-                                <img src="../images/pic01.jpg" alt="" class="image featured mb-2"/>
-                                <p style="color: #009999;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
-                                <ul class="actions mt-2">                                  
-                                  <li style="display:inline;"><a><i class="fa fa-heart-o" aria-hidden="true"></i><i class="fa fa-heart" aria-hidden="true" style="display: none;"></i></a></li>
-                                  <li style="display:inline;"><a><i class="far fa-angry" ></i><i class="fas fa-angry" style="display: none;"></i></a></li>                                  
-                                  <li style="display:inline;" class="like p-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-2"><i class="fa fa-commenting-o"></i><span class="ml-1">Comments</span></li>                                
-                                </ul>
-                            </section>
-                        </div> -->
+                    
                     <% foundRestaurant.reviews.slice().reverse().forEach(function(review){%>
                     <div  style="padding-left:1%;padding-right:1%;margin-bottom:1%">
                         <div style="padding:1%">
@@ -217,7 +205,7 @@
                                     <ul class="actions">                                  
                                   <li style="display:inline;"><a><i class="fa fa-heart-o" aria-hidden="true"></i><i class="fa fa-heart" aria-hidden="true" style="display: none;"></i></a></li>
                                   <li style="display:inline;"><a><i class="far fa-angry" ></i><i class="fas fa-angry" style="display: none;"></i></a></li>                                  
-                                  <li style="display:inline;" class="like p-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-3"><i class="fa fa-commenting-o"></i><span class="ml-1">Comments</span></li>                                
+                                  <li style="display:inline;" class="like p-2 cursor " href="#"><i class="fa fa-commenting-o"></i><span class="ml-1">Comments</span></li>                                
                                 </ul>
                             </section>
                         </div>                                                  
@@ -228,14 +216,14 @@
             
             <div class="4u hidden-xs" id="sidebar">
                 <article>
-                    <form action="/restaurants/<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
+                    <form action="/restaurants/<%=foundRestaurant.id%>/imageLap" method = "POST" enctype="multipart/form-data">
                     <div class="col-75" style="position: relative;float:right">                  
-                        <label class ="new-button" for="imgfile" style="font-size:100%;"> Add Image</label>
-                        <input id="imgfile" name="imgRestOther" accept="image/*" type="file" multiple> 
-                        <b><div id="file-upload-filename"></div></b>
+                        <label class ="new-button" for="imgfile2" style="font-size:100%;"> Add Image</label>
+                        <input id="imgfile2" name="imgRestOther2" accept="image/*" type="file" multiple> 
+                        <b><div id="file-upload-filename2"></div></b>
                     </div>
                     <button type="submit">Submit</button>  
-                </form>                 						
+                    </form>                 						
                 </article>
                 <% foundRestaurant.images.slice().reverse().forEach(function(image){%>
 					<article class="articleImg" style="background-color: black;">
@@ -354,25 +342,46 @@
                 infoArea.textContent = fileName;
                 }
             </script>
-<!-- 
-<script>
-    var input = document.getElementById( 'imgfile2' );
-    var infoArea = document.getElementById( 'file-upload-filename2' );
 
-    input.addEventListener( 'change', showFileName );
+            <script>
+                var input = document.getElementById( 'imgfile1' );
+                var infoArea = document.getElementById( 'file-upload-filename1' );
+                console.log(input)
+                console.log("cdnkn knxm")
+                console.log(infoArea)
+                input.addEventListener( 'change', showFileName );
+            
+                function showFileName( event ) {
+                
+                // the change event gives us the input it occurred in 
+                var input = event.srcElement;
+                
+                // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+                var fileName = input.files[0].name;
+                
+                // use fileName however fits your app best, i.e. add it into a div
+                infoArea.textContent = fileName;
+                }
+            </script>
 
-    function showFileName( event ) {
-    
-    // the change event gives us the input it occurred in 
-    var input = event.srcElement;
-    
-    // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
-    var fileName = input.files[0].name;
-    
-    // use fileName however fits your app best, i.e. add it into a div
-    infoArea.textContent = fileName;
-    }
-</script> -->
+            <script>
+                var input = document.getElementById( 'imgfile2' );
+                var infoArea = document.getElementById( 'file-upload-filename2' );
+
+                input.addEventListener( 'change', showFileName );
+
+                function showFileName( event ) {
+                
+                // the change event gives us the input it occurred in 
+                var input = event.srcElement;
+                
+                // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+                var fileName = input.files[0].name;
+                
+                // use fileName however fits your app best, i.e. add it into a div
+                infoArea.textContent = fileName;
+                }
+            </script>
             
     </body>
     

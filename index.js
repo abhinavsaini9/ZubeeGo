@@ -417,6 +417,26 @@ app.post("/restaurants/:id/imageLap",isLoggedIn,upload.array('imgRestOther2'),fu
         }
     })
 })
+app.post("/restaurants/:id/imagemob",isLoggedIn,upload.array('imgRestOther1'),function(req,res){
+    
+    Restaurant.findById(req.params.id,async (err,foundRestaurant,next)=>{
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            console.log(req.files);
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            // console.log(foundRestaurant);
+            foundRestaurant.images.push(...imgs);
+            console.log(imgs);
+            foundRestaurant.address = foundRestaurant.location.formattedAddress;
+            await foundRestaurant.save();
+            // console.log(foundRestaurant);
+            res.redirect("/restaurants/"+req.params.id);
+        }
+    })
+})
 app.post("/restaurants/:id",isLoggedIn,upload.array('imgReview'),async(req, res,next)=>{
     try{
         console.log("Number"+req.params.id)
@@ -427,7 +447,12 @@ app.post("/restaurants/:id",isLoggedIn,upload.array('imgReview'),async(req, res,
             }
             else{
                 var text = req.body.text;
-                var newReview = {text:text};
+                var authors = {
+                    id: req.user.id ,
+                    username: req.user.username
+                    
+                };
+                var newReview = {text:text,author:authors};
                 
                 Review.create(newReview,async(err,myreview,next)=>{
                     if(err){

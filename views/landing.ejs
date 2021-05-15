@@ -31,19 +31,19 @@
 		</noscript>
 		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		
 		<link rel="stylesheet" href="/css/bootstrap.css"  />
 		<link rel="stylesheet" href="/css/login-register.css" />
-		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+		<!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"> -->
 	</head>
 	<body id="top">
 		
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
-				<h1><a href="#">ZubeeGo</a></h1>
+				<h1>ZubeeGo</h1>
 				<nav id="nav">
-					<ul>
-						
+					<ul>						
 						<li><a class="btn big-register button special" data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Sign Up</a></li>
 						<li><a class="btn big-login button special" data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Sign In</a></li>
 						
@@ -61,34 +61,19 @@
 					  <div class="modal-body">
 						  <div class="box">
 							   <div class="content">
-								  <div class="social">
-									<form action="/google" method="GET" accept-charset="UTF-8">									  									  
-									  <button type="submit"><a id="google_login" class="circle google" href="#">
-										  <i class="fa fa-google-plus fa-fw"></i>
-									  </a></button>
-									</form>									  
-								  </div>
-								  <div class="division">
-									  <div class="line l"></div>
-										<span>or</span>
-									  <div class="line r"></div>
-								  </div>
-								  <div class="error"></div>
 								  <div class="form loginBox">
 									  <form action="/login" method="POST" accept-charset="UTF-8">
                                        <input id="name" class="form-control" type="text" placeholder="Name" name="username">
 									  <input id="password" class="form-control" type="password" placeholder="Password" name="password">
-									  <button class="btn btn-default btn-login" type="submit" value="Login">Login</button>
+									  <button style="padding-top: 2%;padding-bottom: 2%" class="btn btn-default btn-login" type="submit" value="Login">Login</button>
 									  </form>
 								  </div>
 								  <div class="form registerBox" style="display:none;">
 									<form action="/register" method="POST" html="{:multipart=>true}" data-remote="true" accept-charset="UTF-8">
-									  <input id="name" class="form-control" type="text" placeholder="Name" name="username">
-									  <input id="email" class="form-control" type="text" placeholder="Email" name="email">
-									  <input id="phone" class="form-control" type="text" placeholder="Phone No." name="phone">
+									  <input id="name" class="form-control" type="text" placeholder="Name" name="username">									  
 									  <input id="password" class="form-control" type="password" placeholder="Password" name="password">
 									  <input id="password_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password_confirmation">
-									  <button class="btn btn-default btn-register" type="submit" value="Create account" name="commit">Create</button>
+									  <button style="padding-top: 2%;padding-bottom: 2%" class="btn btn-default btn-register" type="submit" value="Create account" name="commit">Create</button>
 									</form>
 								  </div>
 							   </div>
@@ -342,23 +327,21 @@
 					<div class="row">
 						<div class="4u">
 							<section class="special box">
-								<i class="icon fa-area-chart major"></i>
-								<h3>feature 1</h3>
-								<p>Eu non col commodo accumsan ante mi. Commodo consectetur sed mi adipiscing accumsan ac nunc tincidunt lobortis.</p>
+								<img src="/images/rest.jpg" style="height:50%;width:50%">								
+								<h3>Restaurants</h3>
+								</section>
+						</div>
+						<div class="4u">
+							<section class="special box">
+								<img src="/images/tour.jpg" style="height:50%;width:50%">
+								<h3>Tourist Spots</h3>
+								
 							</section>
 						</div>
 						<div class="4u">
 							<section class="special box">
-								<i class="icon fa-refresh major"></i>
-								<h3>feature 2</h3>
-								<p>Eu non col commodo accumsan ante mi. Commodo consectetur sed mi adipiscing accumsan ac nunc tincidunt lobortis.</p>
-							</section>
-						</div>
-						<div class="4u">
-							<section class="special box">
-								<i class="icon fa-cog major"></i>
-								<h3>feature 3</h3>
-								<p>Eu non col commodo accumsan ante mi. Commodo consectetur sed mi adipiscing accumsan ac nunc tincidunt lobortis.</p>
+								<img src="/images/hotel.jpg" style="height:50%;width:50%">
+								<h3>Hotels</h3>								
 							</section>
 						</div>
 					</div>
@@ -368,29 +351,19 @@
 		<!-- Two -->
 			<section id="two" class="wrapper style2">
 				<header class="major">
-					<h2>announcements</h2>
-					<p>Check out what's happening in your area</p>
+					<h2 style="color: #006bb3;margin-left:1%;margin-right:2%">OFFERS</h2>					
+					<h5>Check out what's happening in your area</h5>
 				</header>
 				<div class="container">
 					<div class="row">
 						<div class="6u">
 							<section class="special">
-								<a href="#" class="image fit"><img src="/images/pic01.jpg" alt="" title="offer image"/></a>
-								<h3>OFFER1</h3>
-								<p>offer description.</p>
-								<ul class="actions">
-									<li><a href="#" class="button alt">Learn More</a></li>
-								</ul>
+								<img src="/images/offer1.jpg" alt="" title="offer image" style="height:100%;width:100%"/>
 							</section>
 						</div>
 						<div class="6u" >
 							<section class="special" >
-								<a href="#" class="image fit"><img src="/images/pic5.jpg" alt="" title="offer image"/></a>
-								<h3>OFFER2</h3>
-								<p>offer description.</p>
-								<ul class="actions">
-									<li><a href="#" class="button alt">Learn More</a></li>
-								</ul>
+								<img src="/images/offer2.png" alt="" title="offer image" style="height:92%;width:92%"/>
 							</section>
 						</div>
 						
