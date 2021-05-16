@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Search Place</title>
+		<title></title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -24,13 +24,15 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://kit.fontawesome.com/f6c224efb3.js" crossorigin="anonymous"></script>
-		<noscript>
-			<link rel="stylesheet" href="/public/homeCss/skel.css" />
-			<link rel="stylesheet" href="/public/homeCss/review.css" />			
-			<link rel="stylesheet" href="/public/homeCss/style.css" />
-			<link rel="stylesheet" href="/public/homeCss/style-desktop.css" />
-			<link rel="stylesheet" href="/public/homeCss/style-noscript.css" />
-		</noscript>
+		
+        <noscript>    
+        <link rel="stylesheet" href="/public/homeCss/skel.css" />        
+        <link rel="stylesheet" href="/public/homeCss/style.css" />
+        <link rel="stylesheet" href="/public/homeCss/style-noscript.css" />    
+        </noscript>
+        <!-- <link rel="stylesheet" href="/public/homeCss/style-desktop.css" /> -->
+			
+	  
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 
         <style>
@@ -61,25 +63,7 @@
             .button-wrap {
                 position: relative;
               }
-
-            .profile-head {
-                transform: translateY(5rem)
-            }
-            
-            .cover {
-              background: #ce3a0d;
-            }
-
-              @media only screen and (max-width: 1200px) {
-                #sidebar {
-                    display: none;
-                }
-            }
-            @media only screen and (min-width: 1200px) {
-                #carouse {
-                    display: none;
-                }
-            }
+           
         </style>
 	</head>
 
@@ -93,7 +77,8 @@
             <!-- Inner -->
                 <div class="inner">
                     <header>
-                        <h2 style="color: white;"><a href="" id="logo">User profile</a></h2>
+                        <h2 style="color: white;">rest name</h2>
+                        <h4 style="color: white;">rest address</h4>
                     </header>
                 </div>
             
@@ -131,78 +116,88 @@
         </div>
     <!-- header end-->
     
-            
+     
     
-    <!--main body-->
+    <!--review section-->
     
     <div class="wrapper style1" style="background-color: black;">
-        <div class="row py-5 px-4">
-            <div class="col-md-9 mx-auto">
-        
-                <!-- Profile widget -->
-                <div class="bg-white shadow rounded overflow-hidden">
-                    <div class="px-4 pt-0 pb-4 cover">
-                        <div class="media align-items-end profile-head">
-                            
-                            <div class="media-body mb-5 text-white">
-                                <h2 class="mt-0 mb-0" style="padding-bottom: 1.2rem;"><%=foundUser.username%></h2>
-                            </div>
+    
+    <div class="container">
+        <div class="row 200%">
+            <div class="12u" id="content">
+                <article id="main">                    
+                    <div style="padding-left:1%;padding-right:1%;margin-bottom:1%">
+                        <div style="padding:1%">
+                            <section class="special">                
+                                <h3 style="color: #cc3399;"><a href="location2.html">Location2</a></h3>
+                                <h6>02/02/2002 - 2:00 AM</h6>
+                                <img src="../images/pic01.jpg" alt="" class="image featured mb-2"/>
+                                <strong><p style="color: #009999;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p></strong>
+                                <ul class="actions mt-2">                                  
+                                    <li style="display:inline;"><span onclick="showSolidHeart(this.id)" id="openheart"><i class="fa fa-heart-o" aria-hidden="true"></i></span><span onclick="showOpenHeart()" id="solidheart" style="display: none;"><i class="fa fa-heart" aria-hidden="true" ></i></span></li>
+                                    <li style="display:inline;"><span onclick="showSolidAngry()" id="openangry"><i class="far fa-angry" ></i></span><span onclick="showOpenAngry()" id="solidangry" style="display: none;"><i class="fas fa-angry" ></i></span></li>                                  
+                                                                  
+                                </ul>
+                            </section>
                         </div>
+                                                                    
                     </div>
-                    <div class="bg-light p-4 d-flex justify-content-end text-center">
-                        <ul class="list-inline mb-0" style="padding:5%">
-                            <li class="list-inline-item" >
-                                <h5 class="font-weight-bold mb-0 d-block">6.9/10</h5><small class="text-muted"> <i class="fas fa-star mr-1"></i>Rating</small>
-                            </li>
-                            <li class="list-inline-item" >
-                                <h5 class="font-weight-bold mb-0 d-block">969</h5><small class="text-muted"> <i class="fas fa-user mr-1"></i>Reviews</small>
-                            </li>
-                            <li class="list-inline-item" >
-                                <h5 class="font-weight-bold mb-0 d-block">6969</h5><small class="text-muted"> <i class="fas fa-coins mr-1"></i>Coins</small>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="px-4 py-3">
-                        <h5 class="mb-0">About</h5>
-                        <div class="p-4 rounded shadow-sm bg-light">
-                            <p class="font-italic mb-0">Lives in Ghaziabad</p>
-                            <p class="font-italic mb-0">Photographer</p>
-                            <p class="font-italic mb-0">Traveller</p>
-                        </div>
-                    </div>
-                    <div class="px-4 py-3">
-                        <h5 class="mb-0">Restuarants added</h5>
-                        <div class="p-4 rounded shadow-sm bg-light">
-                            <section class="carousel" >
-                                <div class="reel" >
-                                    <% foundUser.restAddedByMe.slice().reverse().forEach(function(rest){%>
-                                    <% if(rest.images.length){ %>
-                                    <article class="articleImg" >
-                                        <a href="/restaurants/<%=rest.id%>" class="image featured"><img src="<%=rest.images[rest.images.length -1].url%>" alt="" /></a>     
-                                        <header>
-                                            <h3><a href="/restaurants/<%=rest.id%>"><%=rest.name%></a></h3>
-                                        </header>     
-                                        <ul class="actions">
-                                            <li><a href="/restaurant/<%=rest.id%>/offer" class="button alt">Add Offer</a></li>
-                                        </ul>          						
-                                    </article>
-                                    <%}%>
-                                    <%})%>                                    	
-                                </div>
-                                
+                    
+                </article>
+            </div>
+            <div class="2u" id=content></div>
+            <div class="8u" id="content" >
+                
+                <article id="main">  
+                    <div class="card" style="padding-left:1%;padding-right:1%;margin-bottom:1%;background-color: #000000">
+                        <div style="padding:1%">
+                            <section class="special">  
+                                <h3 style="color: #ffffff;">Add Comment</h3>           
+                                <form action="" method="">
+                                    <div class="d-flex flex-row align-items-start">
+                                        <!-- <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40"> -->
+                                        <input type="text" class="form-control ml-1 shadow-none textarea"></textarea>
+                                    </div>                                    
+                                    <div class="mt-2 text-right">
+                                        <ul >                                        
+                                        <li style="display:inline;"><button class="btn btn-primary btn-sm shadow-none" type="button">Post comment</button></li>
+                                        <li style="display:inline;"><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></li>
+                                        </ul>
+                                    </div>
+                                </form>
+                            </section>
+                        </div>                                                                       
+                    </div>                  
+                    <div style="padding-left:1%;padding-right:1%;margin-bottom:1%">
+                        <div style="padding:1%">
+                            <section class="special">                
+                                <h3 style="color: #ff6600;font-size:90%;display: inline;"><a href="location2.html">Name</a></h3>
+                                <h6 style="display: inline;float:right">02/02/2002 - 2:00 AM</h6>                                
+                                <p style="color: #ffffff;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
                             </section>
                         </div>
                     </div>
-                    
-                </div>
+                    <div style="padding-left:1%;padding-right:1%;margin-bottom:1%">
+                        <div style="padding:1%">
+                            <section class="special">                
+                                <h3 style="color: #ff6600;font-size:90%;display: inline;"><a href="location2.html">Name</a></h3>
+                                <h6 style="display: inline;float:right">02/02/2002 - 2:00 AM</h6>                                
+                                <p style="color: #ffffff;"> The teacher asked Polycarp to solve tasks in the following way: if Polycarp began to solve some task, then he must solve it to the end, without being distracted by another task. After switching to another task, Polycarp cannot return to the previous task.</p>
+                            </section>
+                        </div>
+                    </div>
+                </article>
             </div>
+            <div class="2u" id="content"></div>
         </div>        
     </div>
+</div>
     
-<!-- review end-->
+    
+    
+<!-- comment end-->
 
 
-   
     
     <!-- Footer -->
             <div id="footer" style="margin-top: 1%;">
@@ -239,9 +234,26 @@
                     </div>
                 </div>
             </div>
-    
 
-            
+            <script>
+                function showSolidHeart(){
+                    document.getElementById("openheart").style.display="none";
+                    document.getElementById("solidheart").style.display="inline";
+                }
+                function showOpenHeart(){
+                    document.getElementById("solidheart").style.display="none";
+                    document.getElementById("openheart").style.display="inline";
+                }
+                function showSolidAngry(){
+                    document.getElementById("openangry").style.display="none";
+                    document.getElementById("solidangry").style.display="inline";
+                }
+                function showOpenAngry(){
+                    document.getElementById("solidangry").style.display="none";
+                    document.getElementById("openangry").style.display="inline";
+                }
+            </script>
+
     </body>
     
 </html>

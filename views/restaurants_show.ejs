@@ -86,14 +86,14 @@
             <!-- Inner -->
                 <div class="inner">
                     <header>
-                        <h2 style="color: white;"><a href="" id="logo"><%=foundRestaurant.name%></a></h2>
-                        <h4 style="color: white;"><a href="" id="logo"><%=foundRestaurant.location.formattedAddress%></a></h4>
+                        <h2 style="color: white;"><%=foundRestaurant.name%></h2>
+                        <h4 style="color: white;"><%=foundRestaurant.location.formattedAddress%></h4>
                     </header>
                 </div>
             
             <!-- Nav -->
                 <nav id="nav">  
-                    <h2 style="float:left;margin-left:2%;font-family:papyrus;color:tomato"><a href="home.html" id="logo">ZUBEEGO</a></h2>
+                    <h2 style="float:left;margin-left:2%;font-family:papyrus;color:tomato"><a href="/" id="logo">ZUBEEGO</a></h2>
                     <ul style="float:right">
                         <!-- <li>
                             <a href="">dropdown</a>
@@ -201,10 +201,10 @@
                                 <%if(review.images.length){%>
                                 <img src="<%=review.images[0].url%>" alt="" class="image featured"/>
                                 <%}%>
-                                <p><%=review.text%></p>
+                                <p style="color: #009999;"><%=review.text%></p>
                                     <ul class="actions">                                  
-                                  <li style="display:inline;"><a><i class="fa fa-heart-o" aria-hidden="true"></i><i class="fa fa-heart" aria-hidden="true" style="display: none;"></i></a></li>
-                                  <li style="display:inline;"><a><i class="far fa-angry" ></i><i class="fas fa-angry" style="display: none;"></i></a></li>                                  
+                                  <li style="display:inline;"><span onclick="showSolidHeart(this.id)" id="openheart"><i class="fa fa-heart-o" aria-hidden="true"></i></span><span onclick="showOpenHeart()" id="solidheart" style="display: none;"><i class="fa fa-heart" aria-hidden="true" ></i></span></li>
+                                  <li style="display:inline;"><span onclick="showSolidAngry()" id="openangry"><i class="far fa-angry" ></i></span><span onclick="showOpenAngry()" id="solidangry" style="display: none;"><i class="fas fa-angry" ></i></span></li>                                  
                                   <li style="display:inline;" class="like p-2 cursor " href="#"><i class="fa fa-commenting-o"></i><span class="ml-1">Comments</span></li>                                
                                 </ul>
                             </section>
@@ -238,7 +238,7 @@
     
 <!-- review end-->
 
-<!-- Announcements -->
+<!-- offers -->
 <div class="card wrapper style1" style="background-color: black;margin-top:1%;height:fit-content; width:auto;padding-left:2%;padding-right:2%;padding-bottom:2%;color:#005266">
     <div class="container" >
         <article id="main" class="special">
@@ -250,12 +250,11 @@
             <div class="container">
                 <div class="row">
                     <% foundRestaurant.offers.slice().reverse().forEach(function(Offer){%>
-                    <div class="6u " style="padding-left:10%;padding-right:5%">
+                    <div class="6u" style="padding-left:10%;padding-right:5%">
                         <section class="special">     
                             <br>
-                            <img src="<%=Offer.images[0].url%>" style="height:80%;width:80%;">
-                            <p style="color: #009999;"> <%=Offer.text%></p>
-                            
+                            <img src="<%=Offer.images[0].url%>" style="height:80%;width:80%;border-radius:5%;margin-left:auto;margin-right:auto;width:100%"><br>
+                            <p style="color: #009999;"> <%=Offer.text%></p>                            
                         </section>
                     </div>
                     <%})%>                    
@@ -326,42 +325,59 @@
             </script>
 
             <script>
-                var input = document.getElementById( 'imgfile1' );
-                var infoArea = document.getElementById( 'file-upload-filename1' );
-                console.log(input)
-                console.log("cdnkn knxm")
-                console.log(infoArea)
-                input.addEventListener( 'change', showFileName );
+                var input1 = document.getElementById( 'imgfile1' );
+                var infoArea1 = document.getElementById( 'file-upload-filename1' );
+                
+                input1.addEventListener( 'change', showFileName1 );
             
-                function showFileName( event ) {
+                function showFileName1( event ) {
                 
                 // the change event gives us the input it occurred in 
-                var input = event.srcElement;
+                var input1 = event.srcElement;
                 
                 // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
-                var fileName = input.files[0].name;
+                var fileName1 = input1.files[0].name;
                 
                 // use fileName however fits your app best, i.e. add it into a div
-                infoArea.textContent = fileName;
+                infoArea1.textContent = fileName1;
                 }
             </script>
 
             <script>
-                var input = document.getElementById( 'imgfile2' );
-                var infoArea = document.getElementById( 'file-upload-filename2' );
+                var input2 = document.getElementById( 'imgfile2' );
+                var infoArea2 = document.getElementById( 'file-upload-filename2' );
 
-                input.addEventListener( 'change', showFileName );
+                input2.addEventListener( 'change', showFileName2 );
 
-                function showFileName( event ) {
+                function showFileName2( event ) {
                 
                 // the change event gives us the input it occurred in 
-                var input = event.srcElement;
+                var input2 = event.srcElement;
                 
                 // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
-                var fileName = input.files[0].name;
+                var fileName2 = input2.files[0].name;
                 
                 // use fileName however fits your app best, i.e. add it into a div
-                infoArea.textContent = fileName;
+                infoArea2.textContent = fileName2;
+                }
+            </script>
+
+            <script>
+                function showSolidHeart(){
+                    document.getElementById("openheart").style.display="none";
+                    document.getElementById("solidheart").style.display="inline";
+                }
+                function showOpenHeart(){
+                    document.getElementById("solidheart").style.display="none";
+                    document.getElementById("openheart").style.display="inline";
+                }
+                function showSolidAngry(){
+                    document.getElementById("openangry").style.display="none";
+                    document.getElementById("solidangry").style.display="inline";
+                }
+                function showOpenAngry(){
+                    document.getElementById("solidangry").style.display="none";
+                    document.getElementById("openangry").style.display="inline";
                 }
             </script>
             
