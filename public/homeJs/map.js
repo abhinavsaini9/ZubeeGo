@@ -33,6 +33,7 @@ center: [home.Longitude, home.Latitude]
 
 var Current = new mapboxgl.Marker()
 .setLngLat([home.Longitude, home.Latitude])
+
 .addTo(map);
  
 

@@ -295,11 +295,11 @@ app.get("/add_restaurants",isLoggedIn,function(req,res){
 })
 
 //offer
-app.get("/restaurant/:id/offer",isLoggedIn,function(req,res){
+app.get("/restaurant/:id/offer",isLoggedIn,checkRestOwnership,function(req,res){
     res.render("addoffer",{foundId:req.params.id});
 })
 
-app.post("/restaurant/:id/offer",isLoggedIn,upload.array('imgOffer'),function(req,res){
+app.post("/restaurant/:id/offer",isLoggedIn,checkRestOwnership,upload.array('imgOffer'),function(req,res){
     Restaurant.findById(req.params.id,async (err,foundRestaurant,next)=>{
         var text = req.body.text;
         
@@ -323,6 +323,30 @@ app.post("/restaurant/:id/offer",isLoggedIn,upload.array('imgOffer'),function(re
         
     })
 })
+
+app.delete("/restaurants/:id/offer/:offer_id", isLoggedIn,checkRestOwnership, async(req, res,next) => {
+    Offer.findByIdAndRemove(req.params.offer_id, function (err,) {
+        if (err) {
+            res.redirect("back");
+        } else {
+            Restaurant.findById(req.params.id).exec(function (err, foundRest) {
+                if (err) {
+                    console.log(err);
+                    throw new AppError('User not found', 401);
+                }
+                else {
+                    foundRest.offers.pull(req.params.id);
+                    foundRest.address = foundRest.location.formattedAddress;
+                    foundRest.save();
+                    
+                    req.flash("success", "Successfully Deleted");
+                    res.redirect("/restaurants/"+req.params.id);
+                }
+            })
+
+        }
+    });
+});
 
 app.get("/showrestaurants",isLoggedIn,function(req,res){
      
@@ -587,6 +611,29 @@ function checkAnnouncementOwnership(req, res, next) {
             } else {
                 
                 if (foundAnnouncement.announcedBy.id.equals(req.user._id)) {
+                    next();
+                }
+               
+                else {
+                    req.flash("error", "You dont have permission to do that");
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
+}
+
+function checkRestOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        Restaurant.findById(req.params.id, function (err, foundAnnouncement) {
+            if (err) {
+                req.flash("error", "not found");
+                res.redirect("back");
+            } else {
+                
+                if (foundAnnouncement.createdBy.id.equals(req.user._id)) {
                     next();
                 }
                

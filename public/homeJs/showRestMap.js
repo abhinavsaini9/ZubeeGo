@@ -40,8 +40,18 @@ console.log(Restrants);
 Restrants.forEach(resta => {
     console.log(resta);
     console.log(resta.location.coordinates);
+    let he = "/restaurants/"+resta._id;
+    console.log(he);
     var Current1 = new mapboxgl.Marker()
      .setLngLat(resta.location.coordinates)
+     .setPopup(
+        new mapboxgl.Popup({
+            offset : 25
+        })
+        .setHTML(
+            `<h3>${resta.name}</h3><p>${resta.text}</p><a href=${he}>Go to page</a>`
+        )
+    )
      .addTo(map);
  });
 
