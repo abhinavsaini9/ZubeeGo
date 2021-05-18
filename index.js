@@ -22,18 +22,12 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// require('./passport-setup');
+require('./passport-setup');
 
 
 require('dotenv').config();
 
-app.use(
-    cors({
-         origin: "http://localhost:3000", // allow to server to accept request from different origin
-         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-         credentials: true, // allow session cookie from browser to pass through
-   })
-);
+app.use(cors());
 app.use(bodyparser.urlencoded({extended: false}));
 
 app.use(bodyparser.json());
@@ -173,15 +167,12 @@ app.get("/logout", function (req, res) {
 
 //////////////google auth/////////////////////////////
 
-// app.get('/failed',(req,res) => {res.send("You failed");});
-// app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/google/callback', passport.authenticate('google'),(req,res)=>{
+    console.log(req.user);
+    res.redirect("/");
+});
 
-// app.get('/google/callback',   passport.authenticate('google', { failureRedirect: '/landing' }),
-//   function(req, res) {
-//     // Successful authentication, redirect home.
-//     res.send(req.user);
-//     res.redirect('/');
-// });
 
 
 //////////////////////Announcement///////////////////////////////////////////////////////////////////////////////////////////////
