@@ -31,6 +31,12 @@ var UserSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Hotel"
         }
+    ],
+    destAddedByMe:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Destination"
+        }
     ]
 
 

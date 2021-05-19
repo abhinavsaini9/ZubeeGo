@@ -14,6 +14,7 @@ const Announcement = require("./models/announcement");
 const announcement = require("./models/announcement");
 const Restaurant = require("./models/restaurant");
 const Hotel = require("./models/hotel");
+const Destination = require("./models/destination");
 // const { rawListeners } = require("./models/announcement");
 const AppError = require("./AppError");
 const Review = require("./models/review");
@@ -146,7 +147,7 @@ app.post("/login", passport.authenticate("local", {
 app.get("/viewprofile",isLoggedIn,function(req,res){
     console.log("hello");
     console.log(req.user._id);
-    User.findById(req.user._id).populate("restAddedByMe").populate("hotelAddedByMe").exec(async (err, foundUser, next) => {
+    User.findById(req.user._id).populate("restAddedByMe").populate("hotelAddedByMe").populate("destAddedByMe").exec(async (err, foundUser, next) => {
         if(err){
             console.log(err);
         }
@@ -884,7 +885,304 @@ app.post("/hotels/:id/reviews/:review_id",isLoggedIn,async(req, res,next)=>{
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////Destinations///////////////////////////////////////////////////////////////////////////
+app.get("/add_destination",isLoggedIn,function(req,res){
+    res.render("addDestinations");
+})
 
+//offer
+app.get("/dest/:id/offer",isLoggedIn,checkDestOwnership,function(req,res){
+    res.render("addofferDest",{foundId:req.params.id});
+})
+
+app.post("/dest/:id/offer",isLoggedIn,checkDestOwnership,upload.array('imgOfferDest'),function(req,res){
+    Destination.findById(req.params.id,async (err,foundDestination,next)=>{
+        var text = req.body.text;
+        
+        var newOffer = {text:text};
+        Offer.create(newOffer,async(err,myoffer,next)=>{
+            if(err){
+                console.log(err);
+
+            }
+            else{
+                myoffer.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+                const x = await myoffer.save();
+                console.log(x);
+                foundDestination.offers.push(myoffer);
+                foundDestination.address = foundDestination.location.formattedAddress;
+                const y = await foundDestination.save();
+                console.log(y);
+                res.redirect("/dests/"+req.params.id);
+            }
+        })
+        
+    })
+})
+
+app.delete("/dests/:id/offer/:offer_id", isLoggedIn,checkDestOwnership, async(req, res,next) => {
+    Offer.findByIdAndRemove(req.params.offer_id, function (err,) {
+        if (err) {
+            res.redirect("back");
+        } else {
+            Destination.findById(req.params.id).exec(function (err, foundDestination) {
+                if (err) {
+                    console.log(err);
+                    throw new AppError('User not found', 401);
+                }
+                else {
+                    foundDestination.offers.pull(req.params.id);
+                    foundDestination.address = foundDestination.location.formattedAddress;
+                    foundDestination.save();
+                    
+                    req.flash("success", "Successfully Deleted");
+                    res.redirect("/dests/"+req.params.id);
+                }
+            })
+
+        }
+    });
+});
+
+app.get("/showdestination",isLoggedIn,function(req,res){
+     
+    Destination.find().exec(function (err, foundDestination){
+        if (err) {
+            console.log("something went wrong");
+            console.log(err);
+        }
+        else{
+            // console.log(foundRestaurant);
+            res.render("destMap",{Dest:foundDestination})
+        }
+    })
+    
+    
+});
+
+
+app.post("/dests",isLoggedIn,upload.array('imgDest'),function(req,res){
+    var address = req.body.address;
+    var author = {
+        username: req.user.username,
+        id: req.user._id
+    };
+    
+    var text = req.body.text
+    var newDestination = new Hotel({ address : address, name: req.body.name,text:text,createdBy: author});
+    newDestination.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+    Destination.create(newDestination,function(err,newDestination){
+        if (err) {
+            console.log(err);
+            console.log(newDestination)
+        }
+        else {
+            console.log(newDestination)
+            newDestination.save();
+            User.findById(req.user._id,function(err,currentUser){
+                currentUser.destAddedByMe.push(newDestination);
+                currentUser.save();
+                console.log(newDestination.id);
+                res.redirect("/dests/"+ newDestination.id);
+            })       
+        }
+    })
+});
+
+
+app.get("/dests/:id", isLoggedIn, async (req, res, next) => {
+        try{
+        await Destination.findById(req.params.id).populate("reviews").populate("offers").exec(async (err, foundDestination, next) => {
+            if (err) {
+                console.log(err);
+                next(new AppError());
+            }
+            await User.findById(req.user._id).exec(function (err, currUser){
+                if (err) {
+                    console.log(err);
+                }
+                else res.render("dests_show",{foundDest: foundDestination});
+            })
+
+        })}
+        catch(e){
+            next(e);
+        }
+})
+
+app.post("/dests/:id/image",isLoggedIn,upload.array('imgDestOther'),function(req,res){
+    
+    Destination.findById(req.params.id,async (err,foundDestination,next)=>{
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            console.log(req.files);
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            // console.log(foundDestination);
+            foundDestination.images.push(...imgs);
+            console.log(imgs);
+            foundDestination.address = foundDestination.location.formattedAddress;
+            await foundDestination.save();
+            // console.log(foundDestination);
+            res.redirect("/dests/"+req.params.id);
+        }
+    })
+})
+app.post("/dests/:id/imageLap",isLoggedIn,upload.array('imgDestOther2'),function(req,res){
+    
+    Destination.findById(req.params.id,async (err,foundDestination,next)=>{
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            console.log(req.files);
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            // console.log(foundDestination);
+            foundDestination.images.push(...imgs);
+            console.log(imgs);
+            foundDestination.address = foundDestination.location.formattedAddress;
+            await foundDestination.save();
+            // console.log(foundDestination);
+            res.redirect("/dests/"+req.params.id);
+        }
+    })
+})
+app.post("/dests/:id/imagemob",isLoggedIn,upload.array('imgDestOther1'),function(req,res){
+    
+    Destination.findById(req.params.id,async (err,foundDestination,next)=>{
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            console.log(req.files);
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            // console.log(foundDestination);
+            foundDestination.images.push(...imgs);
+            console.log(imgs);
+            foundDestination.address = foundDestination.location.formattedAddress;
+            await foundDestination.save();
+            // console.log(foundDestination);
+            res.redirect("/dests/"+req.params.id);
+        }
+    })
+})
+app.post("/dests/:id",isLoggedIn,upload.array('imgReview'),async(req, res,next)=>{
+    try{
+        console.log("Number"+req.params.id)
+        Destination.findById(req.params.id).exec(function(err,foundDestination){
+            if(err){
+                console.log(err);
+                next(new AppError());
+            }
+            else{
+                var text = req.body.text;
+                var authors = {
+                    id: req.user._id ,
+                    username: req.user.username
+                    
+                };
+                var newReview = {text:text,author:authors};
+                
+                Review.create(newReview,async(err,myreview,next)=>{
+                    if(err){
+                        console.log(err);
+                        next(new AppError());
+                    }
+                    else{
+                        myreview.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+                       console.log(myreview);
+                console.log(foundDestination);
+                 const isReviewsaved = await myreview.save();
+                  console.log("c"+isReviewsaved);
+                console.log(foundDestination.reviews);
+                console.log("cjdnckndklnvm kdmvf vrv-------------------------------");
+                foundDestination.reviews.push(myreview);
+                console.log(foundDestination);
+                foundDestination.address = foundDestination.location.formattedAddress;
+                const issave = await foundDestination.save();
+                console.log("d"+issave);
+                console.log(foundDestination.reviews);
+                res.redirect("/dests/"+req.params.id);}
+                       
+            })}
+     
+                
+                
+            })}
+          
+    catch(e){
+        next(e);
+    }
+})
+
+app.get("/dests/:id/reviews/:review_id", isLoggedIn, async (req, res, next) => {
+    try{
+        Destination.findById(req.params.id).populate("reviews").exec(function(err,foundDestination){
+    if(err){
+        console.log(err);
+    }
+    else{
+    Review.findById(req.params.review_id).populate("comments").exec(async (err, foundReview, next) => {
+        if (err) {
+            console.log(err);
+            next(new AppError());
+        }
+        await User.findById(req.user._id).exec(function (err, currUser){
+            if (err) {
+                console.log(err);
+            }
+            else res.render("commentsDest",{foundDest:foundDestination,foundReview:foundReview});
+        })
+
+    })}})}
+    catch(e){
+        next(e);
+    }
+})
+
+app.post("/dests/:id/reviews/:review_id",isLoggedIn,async(req, res,next)=>{
+    try{
+      var text = req.body.text;
+      
+      var authors = {
+        id: req.user._id ,
+        username: req.user.username
+        
+    };
+    var newComment = new Comment({text:text,author:authors});
+      
+      await Comment.create(newComment,function(err,newComment){
+          if(err){
+              console.log(err);
+              next(new AppError());
+          }
+          else{
+            Review.findById(req.params.review_id).exec(function(err,foundReview){
+                if(err){
+                    console.log(err);
+              next(new AppError());
+                }
+                else{
+                newComment.save();
+                console.log(newComment);
+                foundReview.comments.push(newComment);
+                foundReview.save();
+                res.redirect("/dests/"+req.params.id+"/reviews/"+req.params.review_id);}
+            })
+          }
+      })
+      
+    }
+    catch(e){
+        next(e);
+    }
+})
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -972,7 +1270,28 @@ function checkHotelOwnership(req, res, next) {
     }
 }
 
-
+function checkDestOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        Destination.findById(req.params.id, function (err, foundAnnouncement) {
+            if (err) {
+                req.flash("error", "not found");
+                res.redirect("back");
+            } else {
+                
+                if (foundAnnouncement.createdBy.id.equals(req.user._id)) {
+                    next();
+                }
+               
+                else {
+                    req.flash("error", "You dont have permission to do that");
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
+}
 
 
 
