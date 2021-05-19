@@ -129,14 +129,7 @@
     
     <div class="container">
         <div class="row 200%">
-            <!-- <form action="/restaurants/<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
-                <div class="col-75" style="position: relative;float:right">                  
-                    <label class ="new-button" for="imgfile" style="font-size:100%;"> Add Image</label>
-                    <input id="imgfile" name="imgRestOther" accept="image/*" type="file" multiple> 
-                    <b><div id="file-upload-filename"></div></b>
-                </div>
-                <button type="submit">Submit</button>  
-            </form>  -->
+           
             <section class="carousel" id="carouse" style="background-color: black;">
 				<div class="reel" style="background-color: black;">
                     <% foundHotel.images.slice().reverse().forEach(function(image){%>
@@ -251,7 +244,7 @@
                             <br>
                             <img src="<%=Offer.images[0].url%>" style="height:80%;width:80%;border-radius:5%;margin-left:auto;margin-right:auto;width:100%"><br>
                             <p style="color: #009999;"> <%=Offer.text%></p> 
-                            <%if(foundRestaurant.createdBy.id.equals(currentUser._id)){%>
+                            <%if(foundHotel.createdBy.id.equals(currentUser._id)){%>
                             <form action="/hotels/<%=foundHotel.id%>/offer/<%=Offer.id%>?_method=DELETE" method="POST">
                                 <button type="submit"style="float: right;margin-left:2%;background-color:black;color:#009999">Delete</button>
                             </form> 

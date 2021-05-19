@@ -13,6 +13,7 @@ const user = require("./models/user");
 const Announcement = require("./models/announcement");
 const announcement = require("./models/announcement");
 const Restaurant = require("./models/restaurant");
+const Hotel = require("./models/hotel");
 // const { rawListeners } = require("./models/announcement");
 const AppError = require("./AppError");
 const Review = require("./models/review");
@@ -145,7 +146,7 @@ app.post("/login", passport.authenticate("local", {
 app.get("/viewprofile",isLoggedIn,function(req,res){
     console.log("hello");
     console.log(req.user._id);
-    User.findById(req.user._id).populate("restAddedByMe").exec(async (err, foundUser, next) => {
+    User.findById(req.user._id).populate("restAddedByMe").populate("hotelAddedByMe").exec(async (err, foundUser, next) => {
         if(err){
             console.log(err);
         }
@@ -579,14 +580,309 @@ app.post("/restaurants/:id/reviews/:review_id",isLoggedIn,async(req, res,next)=>
     }
 })
 
-app.get("/comment",isLoggedIn,function(req,res){
-    res.render("comments");
-})
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+/////////////////////////////////////////////////////////////////////////Hotel////////////////////////////////////////////////////////////////////////
+app.get("/add_hotel",isLoggedIn,function(req,res){
+    res.render("addHotel");
+})
 
+//offer
+app.get("/hotel/:id/offer",isLoggedIn,checkHotelOwnership,function(req,res){
+    res.render("addofferHotel",{foundId:req.params.id});
+})
+
+app.post("/hotel/:id/offer",isLoggedIn,checkHotelOwnership,upload.array('imgOfferHotel'),function(req,res){
+    Hotel.findById(req.params.id,async (err,foundHostel,next)=>{
+        var text = req.body.text;
+        
+        var newOffer = {text:text};
+        Offer.create(newOffer,async(err,myoffer,next)=>{
+            if(err){
+                console.log(err);
+
+            }
+            else{
+                myoffer.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+                const x = await myoffer.save();
+                console.log(x);
+                foundHostel.offers.push(myoffer);
+                foundHostel.address = foundHostel.location.formattedAddress;
+                const y = await foundHostel.save();
+                console.log(y);
+                res.redirect("/hotels/"+req.params.id);
+            }
+        })
+        
+    })
+})
+
+app.delete("/hotels/:id/offer/:offer_id", isLoggedIn,checkHotelOwnership, async(req, res,next) => {
+    Offer.findByIdAndRemove(req.params.offer_id, function (err,) {
+        if (err) {
+            res.redirect("back");
+        } else {
+            Hotel.findById(req.params.id).exec(function (err, foundHotel) {
+                if (err) {
+                    console.log(err);
+                    throw new AppError('User not found', 401);
+                }
+                else {
+                    foundHotel.offers.pull(req.params.id);
+                    foundHotel.address = foundHotel.location.formattedAddress;
+                    foundHotel.save();
+                    
+                    req.flash("success", "Successfully Deleted");
+                    res.redirect("/hotels/"+req.params.id);
+                }
+            })
+
+        }
+    });
+});
+
+app.get("/showhotel",isLoggedIn,function(req,res){
+     
+    Hotel.find().exec(function (err, foundHotel){
+        if (err) {
+            console.log("something went wrong");
+            console.log(err);
+        }
+        else{
+            // console.log(foundRestaurant);
+            res.render("hotelMap",{Hotel:foundHotel})
+        }
+    })
+    
+    
+});
+
+
+app.post("/hotels",isLoggedIn,upload.array('imgHotel'),function(req,res){
+    var address = req.body.address;
+    var author = {
+        username: req.user.username,
+        id: req.user._id
+    };
+    
+    var text = req.body.text
+    var newHotel = new Hotel({ address : address, name: req.body.name,text:text,createdBy: author});
+    newHotel.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+    Hotel.create(newHotel,function(err,newHotel){
+        if (err) {
+            console.log(err);
+            console.log(newHotel)
+        }
+        else {
+            console.log(newHotel)
+            newHotel.save();
+            User.findById(req.user._id,function(err,currentUser){
+                currentUser.hotelAddedByMe.push(newHotel);
+                currentUser.save();
+                console.log(newHotel.id);
+                res.redirect("/hotels/"+ newHotel.id);
+            })       
+        }
+    })
+});
+
+
+app.get("/hotels/:id", isLoggedIn, async (req, res, next) => {
+        try{
+        await Hotel.findById(req.params.id).populate("reviews").populate("offers").exec(async (err, foundHotel, next) => {
+            if (err) {
+                console.log(err);
+                next(new AppError());
+            }
+            await User.findById(req.user._id).exec(function (err, currUser){
+                if (err) {
+                    console.log(err);
+                }
+                else res.render("hotels_show",{foundHotel: foundHotel});
+            })
+
+        })}
+        catch(e){
+            next(e);
+        }
+})
+
+app.post("/hotels/:id/image",isLoggedIn,upload.array('imgHotelOther'),function(req,res){
+    
+    Hotel.findById(req.params.id,async (err,foundHotel,next)=>{
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            console.log(req.files);
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            // console.log(foundHotel);
+            foundHotel.images.push(...imgs);
+            console.log(imgs);
+            foundHotel.address = foundHotel.location.formattedAddress;
+            await foundHotel.save();
+            // console.log(foundHotel);
+            res.redirect("/hotels/"+req.params.id);
+        }
+    })
+})
+app.post("/hotels/:id/imageLap",isLoggedIn,upload.array('imgHotelOther2'),function(req,res){
+    
+    Hotel.findById(req.params.id,async (err,foundHotel,next)=>{
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            console.log(req.files);
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            // console.log(foundHotel);
+            foundHotel.images.push(...imgs);
+            console.log(imgs);
+            foundHotel.address = foundHotel.location.formattedAddress;
+            await foundHotel.save();
+            // console.log(foundRestaurant);
+            res.redirect("/hotels/"+req.params.id);
+        }
+    })
+})
+app.post("/hotels/:id/imagemob",isLoggedIn,upload.array('imgHotelOther1'),function(req,res){
+    
+    Hotel.findById(req.params.id,async (err,foundHotel,next)=>{
+        if(err){
+            console.log(err);
+            next(new AppError());
+        }
+        else{
+            console.log(req.files);
+            const imgs = req.files.map(f =>({url: f.path,filename: f.filename}));
+            // console.log(foundHotel);
+            foundHotel.images.push(...imgs);
+            console.log(imgs);
+            foundHotel.address = foundHotel.location.formattedAddress;
+            await foundHotel.save();
+            // console.log(foundHotel);
+            res.redirect("/hotels/"+req.params.id);
+        }
+    })
+})
+app.post("/hotels/:id",isLoggedIn,upload.array('imgReview'),async(req, res,next)=>{
+    try{
+        console.log("Number"+req.params.id)
+        Hotel.findById(req.params.id).exec(function(err,foundHotel){
+            if(err){
+                console.log(err);
+                next(new AppError());
+            }
+            else{
+                var text = req.body.text;
+                var authors = {
+                    id: req.user._id ,
+                    username: req.user.username
+                    
+                };
+                var newReview = {text:text,author:authors};
+                
+                Review.create(newReview,async(err,myreview,next)=>{
+                    if(err){
+                        console.log(err);
+                        next(new AppError());
+                    }
+                    else{
+                        myreview.images = req.files.map(f =>({url: f.path,filename: f.filename}));
+                       console.log(myreview);
+                console.log(foundHotel);
+                 const isReviewsaved = await myreview.save();
+                  console.log("c"+isReviewsaved);
+                console.log(foundHotel.reviews);
+                console.log("cjdnckndklnvm kdmvf vrv-------------------------------");
+                foundHotel.reviews.push(myreview);
+                console.log(foundHotel);
+                foundHotel.address = foundHotel.location.formattedAddress;
+                const issave = await foundHotel.save();
+                console.log("d"+issave);
+                console.log(foundHotel.reviews);
+                res.redirect("/hotels/"+req.params.id);}
+                       
+            })}
+     
+                
+                
+            })}
+          
+    catch(e){
+        next(e);
+    }
+})
+
+app.get("/hotels/:id/reviews/:review_id", isLoggedIn, async (req, res, next) => {
+    try{
+     Hotel.findById(req.params.id).populate("reviews").exec(function(err,foundHotel){
+    if(err){
+        console.log(err);
+    }
+    else{
+    Review.findById(req.params.review_id).populate("comments").exec(async (err, foundReview, next) => {
+        if (err) {
+            console.log(err);
+            next(new AppError());
+        }
+        await User.findById(req.user._id).exec(function (err, currUser){
+            if (err) {
+                console.log(err);
+            }
+            else res.render("commentsHotel",{foundHotel:foundHotel,foundReview:foundReview});
+        })
+
+    })}})}
+    catch(e){
+        next(e);
+    }
+})
+
+app.post("/hotels/:id/reviews/:review_id",isLoggedIn,async(req, res,next)=>{
+    try{
+      var text = req.body.text;
+      
+      var authors = {
+        id: req.user._id ,
+        username: req.user.username
+        
+    };
+    var newComment = new Comment({text:text,author:authors});
+      
+      await Comment.create(newComment,function(err,newComment){
+          if(err){
+              console.log(err);
+              next(new AppError());
+          }
+          else{
+            Review.findById(req.params.review_id).exec(function(err,foundReview){
+                if(err){
+                    console.log(err);
+              next(new AppError());
+                }
+                else{
+                newComment.save();
+                console.log(newComment);
+                foundReview.comments.push(newComment);
+                foundReview.save();
+                res.redirect("/hotels/"+req.params.id+"/reviews/"+req.params.review_id);}
+            })
+          }
+      })
+      
+    }
+    catch(e){
+        next(e);
+    }
+})
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -653,6 +949,28 @@ function checkRestOwnership(req, res, next) {
     }
 }
 
+function checkHotelOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        Hotel.findById(req.params.id, function (err, foundAnnouncement) {
+            if (err) {
+                req.flash("error", "not found");
+                res.redirect("back");
+            } else {
+                
+                if (foundAnnouncement.createdBy.id.equals(req.user._id)) {
+                    next();
+                }
+               
+                else {
+                    req.flash("error", "You dont have permission to do that");
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
+}
 
 
 

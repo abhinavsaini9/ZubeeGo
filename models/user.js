@@ -25,7 +25,14 @@ var UserSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Restaurant"
         }
+    ],
+    hotelAddedByMe:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Hotel"
+        }
     ]
+
 
 });
 

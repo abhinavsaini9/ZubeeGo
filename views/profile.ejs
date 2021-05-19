@@ -189,6 +189,29 @@
                             </section>
                         </div>
                     </div>
+                    <div class="px-4 py-3">
+                        <h5 class="mb-0">Hotels added</h5>
+                        <div class="p-4 rounded shadow-sm bg-light">
+                            <section class="carousel" >
+                                <div class="reel" >
+                                    <% foundUser.hotelAddedByMe.slice().reverse().forEach(function(rest){%>
+                                    <% if(rest.images.length){ %>
+                                    <article class="articleImg" >
+                                        <a href="/hotel/<%=rest.id%>" class="image featured"><img src="<%=rest.images[rest.images.length -1].url%>" alt="" /></a>     
+                                        <header>
+                                            <h3><a href="/hotel/<%=rest.id%>"><%=rest.name%></a></h3>
+                                        </header>     
+                                        <ul class="actions">
+                                            <li><a href="/hotel/<%=rest.id%>/offer" class="button alt">Add Offer</a></li>
+                                        </ul>          						
+                                    </article>
+                                    <%}%>
+                                    <%})%>                                    	
+                                </div>
+                                
+                            </section>
+                        </div>
+                    </div>
                     
                 </div>
             </div>
