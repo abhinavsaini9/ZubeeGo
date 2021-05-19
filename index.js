@@ -22,7 +22,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-//require('./passport-setup');
+require('./passport-setup');
 
 
 require('dotenv').config();
@@ -144,8 +144,8 @@ app.post("/login", passport.authenticate("local", {
 //viewProfile
 app.get("/viewprofile",isLoggedIn,function(req,res){
     console.log("hello");
-    console.log(req.user.id);
-    User.findById(req.user.id).populate("restAddedByMe").exec(async (err, foundUser, next) => {
+    console.log(req.user._id);
+    User.findById(req.user._id).populate("restAddedByMe").exec(async (err, foundUser, next) => {
         if(err){
             console.log(err);
         }
@@ -164,7 +164,7 @@ app.get("/logout", function (req, res) {
     req.flash("success", "Logged you out!!")
     res.redirect("/landing");
 });
-/*
+
 //////////////google auth/////////////////////////////
 
 app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -172,7 +172,7 @@ app.get('/google/callback', passport.authenticate('google'),(req,res)=>{
     console.log(req.user);
     res.redirect("/");
 });
-*/
+
 
 
 //////////////////////Announcement///////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +200,7 @@ app.post("/announcements",isLoggedIn,function(req,res){
     //console.log(req.body)
     var address = req.body.address;
     var authors = {
-        id: req.user.id ,
+        id: req.user._id ,
         username: req.user.username
         
     };
@@ -362,7 +362,7 @@ app.post("/restaurants",isLoggedIn,upload.array('imgRest'),function(req,res){
     var address = req.body.address;
     var author = {
         username: req.user.username,
-        id: req.user.id
+        id: req.user._id
     };
     
     var text = req.body.text
@@ -376,7 +376,7 @@ app.post("/restaurants",isLoggedIn,upload.array('imgRest'),function(req,res){
         else {
             console.log(newRestaurant)
             newRestaurant.save();
-            User.findById(req.user.id,function(err,currentUser){
+            User.findById(req.user._id,function(err,currentUser){
                 currentUser.restAddedByMe.push(newRestaurant);
                 currentUser.save();
                 console.log(newRestaurant.id);
@@ -478,7 +478,7 @@ app.post("/restaurants/:id",isLoggedIn,upload.array('imgReview'),async(req, res,
             else{
                 var text = req.body.text;
                 var authors = {
-                    id: req.user.id ,
+                    id: req.user._id ,
                     username: req.user.username
                     
                 };
@@ -546,7 +546,7 @@ app.post("/restaurants/:id/reviews/:review_id",isLoggedIn,async(req, res,next)=>
       var text = req.body.text;
       
       var authors = {
-        id: req.user.id ,
+        id: req.user._id ,
         username: req.user.username
         
     };
