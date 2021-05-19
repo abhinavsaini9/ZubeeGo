@@ -281,6 +281,8 @@ const storage = new CloudinaryStorage({
 })
 
 const upload = multer({storage});
+
+
 app.get("/add_restaurants",isLoggedIn,function(req,res){
     res.render("addHotel");
 })
@@ -516,6 +518,11 @@ app.post("/restaurants/:id",isLoggedIn,upload.array('imgReview'),async(req, res,
 
 app.get("/restaurants/:id/reviews/:review_id", isLoggedIn, async (req, res, next) => {
     try{
+     Restaurant.findById(req.params.id).populate("reviews").exec(function(err,foundRest){
+    if(err){
+        console.log(err);
+    }
+    else{
     Review.findById(req.params.review_id).populate("comments").exec(async (err, foundReview, next) => {
         if (err) {
             console.log(err);
@@ -525,10 +532,10 @@ app.get("/restaurants/:id/reviews/:review_id", isLoggedIn, async (req, res, next
             if (err) {
                 console.log(err);
             }
-            else res.render("comment_show");
+            else res.render("comments",{foundRestaurant:foundRest,foundReview:foundReview});
         })
 
-    })}
+    })}})}
     catch(e){
         next(e);
     }
@@ -537,7 +544,13 @@ app.get("/restaurants/:id/reviews/:review_id", isLoggedIn, async (req, res, next
 app.post("/restaurants/:id/reviews/:review_id",isLoggedIn,async(req, res,next)=>{
     try{
       var text = req.body.text;
-      var newComment = new Comment({text:text});
+      
+      var authors = {
+        id: req.user.id ,
+        username: req.user.username
+        
+    };
+    var newComment = new Comment({text:text,author:authors});
       
       await Comment.create(newComment,function(err,newComment){
           if(err){
@@ -552,9 +565,10 @@ app.post("/restaurants/:id/reviews/:review_id",isLoggedIn,async(req, res,next)=>
                 }
                 else{
                 newComment.save();
-                foundReviews.comment.push(newComment);
-                foundReviews.save();
-                res.redirect("/restaurants/:"+req.params.id+"/reviews/"+req.params.review_id);}
+                console.log(newComment);
+                foundReview.comments.push(newComment);
+                foundReview.save();
+                res.redirect("/restaurants/"+req.params.id+"/reviews/"+req.params.review_id);}
             })
           }
       })
