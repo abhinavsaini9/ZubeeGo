@@ -22,7 +22,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-require('./passport-setup');
+//require('./passport-setup');
 
 
 require('dotenv').config();
@@ -164,7 +164,7 @@ app.get("/logout", function (req, res) {
     req.flash("success", "Logged you out!!")
     res.redirect("/landing");
 });
-
+/*
 //////////////google auth/////////////////////////////
 
 app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -172,7 +172,7 @@ app.get('/google/callback', passport.authenticate('google'),(req,res)=>{
     console.log(req.user);
     res.redirect("/");
 });
-
+*/
 
 
 //////////////////////Announcement///////////////////////////////////////////////////////////////////////////////////////////////
