@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AddHotel</title>
+    <title>Add Hotel</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -134,35 +134,31 @@
                 </div>
             
             <!-- Nav -->
-                <nav id="nav">
-                    <h2 style="float:left;margin-left:2%;font-family:papyrus;color:tomato"><a href="/" id="logo">ZUBEEGO</a></h2>
-                    <ul style="float:right">
-                        <!-- <li>
-                            <a href="">dropdown</a>
-                            <ul>
-                                <li><a href="#">Lorem ipsum dolor</a></li>
-                                <li><a href="#">Magna phasellus</a></li>
-                                <li><a href="#">Etiam dolore nisl</a></li>
-                                <li>
-                                    <a href="">And a submenu &hellip;</a>
-                                    <ul>
-                                        <li><a href="#">Lorem ipsum dolor</a></li>
-                                        <li><a href="#">Phasellus consequat</a></li>
-                                        <li><a href="#">Magna phasellus</a></li>
-                                        <li><a href="#">Etiam dolore nisl</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Veroeros feugiat</a></li>
-                            </ul>
-                        </li> -->
-                        <li ><a href="/add_restaurants">Add Restaurant</a></li>
-                        <li ><a href="/showrestaurants">Search Location</a></li>
-                        <li ><a href="/announcements">Announcements</a></li>
-                        <li ><a href="/viewprofile">View Profile</a></li>
-                        <li ><a href="/feedback">FeedBack</a></li>
-                        <li ><a href="/logout">Logout</a></li>
-                    </ul>
-                </nav>
+            <nav id="nav">  
+                <h2 style="float:left;margin-left:2%;font-family:papyrus;color:tomato"><a href="/" id="logo">ZUBEEGO</a></h2>
+                <ul style="float:right">
+                    <li>
+                        <a href="">Add</a>
+                        <ul>
+                            <li><a href="/add_restaurants">Add Restaurant</a></li>
+                            <li><a href="/add_hotel">Add Hotel</a></li>
+                            <li><a href="/add_destination">Add Destinations</a></li>                                
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="">Search</a>
+                        <ul>
+                            <li><a href="/showrestaurants">Search Restaurant</a></li>
+                            <li><a href="/showhotel">Search Hotel</a></li>
+                            <li><a href="/showdestination">Search Destinations</a></li>                                
+                        </ul>
+                    </li>
+                    <li ><a href="/announcements">Announcements</a></li>
+                    <li ><a href="/viewprofile">View Profile</a></li>
+                    <li ><a href="/feedback">FeedBack</a></li>
+                    <li ><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
 
         </div>
   <!--Add Announcements -->
@@ -174,7 +170,7 @@
         <div class="container">
           <!-- <h2 style="text-align: center;color: #008000;">ADD ANNOUNCEMENTS </h2> -->
           <br>
-          <form action="/restaurants" method="POST" style="margin: 2% 10% 2% 10%;" enctype="multipart/form-data">
+          <form action="/hotel" method="POST" style="margin: 2% 10% 2% 10%;" enctype="multipart/form-data">
             <div class="row">
               <div class="col-25">
                 <label for="loc" style="font-size: 125%;color: #cc3399;" >Name</label>
@@ -223,7 +219,7 @@
                     
                     <div class=”button-wrap”>
                         <label class ="new-button" for="imgfile"> Upload Image</label>
-                        <input id="imgfile" name="imgRest" accept="image/*" type="file" multiple>
+                        <input id="imgfile" name="imgHotel" accept="image/*" type="file" multiple>
                         <b><div id="file-upload-filename"></div></b>
                     <div>
                     

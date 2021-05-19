@@ -284,7 +284,7 @@ const upload = multer({storage});
 
 
 app.get("/add_restaurants",isLoggedIn,function(req,res){
-    res.render("addHotel");
+    res.render("addRestaurant");
 })
 
 //offer

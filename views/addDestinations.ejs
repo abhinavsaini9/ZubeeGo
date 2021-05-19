@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AddAnnounecements</title>
+    <title>Add Destination</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -53,6 +51,7 @@
     border-radius: 4px;
     cursor: pointer;
     float: right;
+    
     }
 
     input[type=submit]:hover {
@@ -91,6 +90,27 @@
     text-decoration-color: black;
     }
 
+    .new-button {
+        display: inline-block;
+        padding: 8px 12px; 
+        cursor: pointer;
+        border-radius: 4px;
+        background-color: #009999;
+        font-size: 16px;
+        color: #fff;
+    }
+    input[type="file"] {
+      position: absolute;
+      z-index: -1;
+      top: 6px;
+      left: 0;
+      font-size: 15px;
+      color: rgb(153,153,153);
+    }
+    .button-wrap {
+      position: relative;
+    }
+
     /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
     @media screen and (max-width: 600px) {
     .col-25, .col-75, input[type=submit] {
@@ -109,36 +129,36 @@
             <!-- Inner -->
                 <div class="inner">
                     <header>
-                        <h2 style="color: white;"><a href="" id="logo">ADD ANNOUNCEMENTS</a></h2>
+                        <h2 style="color: white;"><a href="" id="logo">ADD DESTINATIONS TO VISIT</a></h2>
                     </header>
                 </div>
             
             <!-- Nav -->
             <nav id="nav">  
-              <h2 style="float:left;margin-left:2%;font-family:papyrus;color:tomato"><a href="/" id="logo">ZUBEEGO</a></h2>
-              <ul style="float:right">
-                  <li>
-                      <a href="">Add</a>
-                      <ul>
-                          <li><a href="/add_restaurants">Add Restaurant</a></li>
-                          <li><a href="/add_hotel">Add Hotel</a></li>
-                          <li><a href="/add_destination">Add Destinations</a></li>                                
-                      </ul>
-                  </li>
-                  <li>
-                      <a href="">Search</a>
-                      <ul>
-                          <li><a href="/showrestaurants">Search Restaurant</a></li>
-                          <li><a href="/showhotel">Search Hotel</a></li>
-                          <li><a href="/showdestination">Search Destinations</a></li>                                
-                      </ul>
-                  </li>
-                  <li ><a href="/announcements">Announcements</a></li>
-                  <li ><a href="/viewprofile">View Profile</a></li>
-                  <li ><a href="/feedback">FeedBack</a></li>
-                  <li ><a href="/logout">Logout</a></li>
-              </ul>
-          </nav>
+                <h2 style="float:left;margin-left:2%;font-family:papyrus;color:tomato"><a href="/" id="logo">ZUBEEGO</a></h2>
+                <ul style="float:right">
+                    <li>
+                        <a href="">Add</a>
+                        <ul>
+                            <li><a href="/add_restaurants">Add Restaurant</a></li>
+                            <li><a href="/add_hotel">Add Hotel</a></li>
+                            <li><a href="/add_destination">Add Destinations</a></li>                                
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="">Search</a>
+                        <ul>
+                            <li><a href="/showrestaurants">Search Restaurant</a></li>
+                            <li><a href="/showhotel">Search Hotel</a></li>
+                            <li><a href="/showdestination">Search Destinations</a></li>                                
+                        </ul>
+                    </li>
+                    <li ><a href="/announcements">Announcements</a></li>
+                    <li ><a href="/viewprofile">View Profile</a></li>
+                    <li ><a href="/feedback">FeedBack</a></li>
+                    <li ><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
 
         </div>
   <!--Add Announcements -->
@@ -150,23 +170,63 @@
         <div class="container">
           <!-- <h2 style="text-align: center;color: #008000;">ADD ANNOUNCEMENTS </h2> -->
           <br>
-          <form action="/announcements" style="margin: 2% 10% 2% 10%;" method="POST">
+          <form action="/dests" method="POST" style="margin: 2% 10% 2% 10%;" enctype="multipart/form-data">
             <div class="row">
               <div class="col-25">
-                <label for="loc" style="font-size: 125%;color: #cc3399;" >Location</label>
+                <label for="loc" style="font-size: 125%;color: #cc3399;" >Name</label>
               </div>
               <div class="col-75">
-                <input type="text" id="loc" name="address" placeholder="Location...">
+                <input type="text" id="loc" name="name" placeholder="Name...">
               </div>
-            </div>            
+            </div>   
+            <div class="row">
+                <div class="col-25">
+                    <label for="loc" style="font-size: 125%;color: #cc3399;" >Select Location</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="loc" name="address" placeholder="Location...">
+                </div>
+            </div> 
+            <div class="row">
+                <div class="col-25">
+                    <label for="loc" style="font-size: 125%;color: #cc3399;" >Near By Landmark</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="loc" name="location" placeholder="Landmark...">
+                </div>
+            </div>    
+            <div class="row">
+                <div class="col-25">
+                    <label for="loc" style="font-size: 125%;color: #cc3399;" >Address</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="loc" name="location" placeholder="Address...">
+                </div>
+            </div>      
             <div class="row">
               <div class="col-25">
-                <label for="announce" style="font-size: 125%;color: #cc3399;">Announcement</label>
+                <label for="announce" style="font-size: 125%;color: #cc3399;">Details</label>
               </div>
               <div class="col-75">
-                <textarea id="announce" name="text" placeholder="Announcement.." style="height:200px"></textarea>
+                <textarea id="announce" name="text" placeholder="Details.." style="height:200px"></textarea>
               </div>
             </div>
+            <div class="row">
+                <div class="col-25">
+                  <label for="announce" style="font-size: 125%;color: #cc3399;">Image</label>
+                </div>
+                <div class="col-75" style="position: relative;">
+                    
+                    <div class=”button-wrap”>
+                        <label class ="new-button" for="imgfile"> Upload Image</label>
+                        <input id="imgfile" name="imgDest" accept="image/*" type="file" multiple>
+                        <b><div id="file-upload-filename"></div></b>
+                    <div>
+                    
+                    
+                </div>
+                
+              </div>
             <br><br>
             <div class="row">
                 <div style="float: right;" class="col-25" >
@@ -214,6 +274,25 @@
     </div>
   </div>
 </div>
+
+<script>
+    var input = document.getElementById( 'imgfile' );
+    var infoArea = document.getElementById( 'file-upload-filename' );
+
+    input.addEventListener( 'change', showFileName );
+
+    function showFileName( event ) {
+    
+    // the change event gives us the input it occurred in 
+    var input = event.srcElement;
+    
+    // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    var fileName = input.files[0].name;
+    
+    // use fileName however fits your app best, i.e. add it into a div
+    infoArea.textContent = fileName;
+    }
+</script>
 
 </body>
 </html>

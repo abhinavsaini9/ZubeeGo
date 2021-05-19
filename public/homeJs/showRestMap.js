@@ -42,7 +42,9 @@ Restrants.forEach(resta => {
     console.log(resta.location.coordinates);
     let he = "/restaurants/"+resta._id;
     console.log(he);
-    var Current1 = new mapboxgl.Marker()
+    var Current1 = new mapboxgl.Marker({
+        color: "#DC143C"
+    })
      .setLngLat(resta.location.coordinates)
      .setPopup(
         new mapboxgl.Popup({

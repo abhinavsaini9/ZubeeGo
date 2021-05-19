@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AddAnnounecements</title>
+    <title>Add Offer</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -90,6 +90,27 @@
     clear: both;
     text-decoration-color: black;
     }
+    .new-button {
+      display: inline-block;
+      padding-left: 5px;
+      padding-right: 5px; 
+      cursor: pointer;
+      border-radius: 4px;
+      background-color: #009999;
+      font-size: 12px;
+      color: #fff;
+  }
+  input[type="file"] {
+    position: absolute;
+    z-index: -1;
+    top: 6px;
+    left: 0;
+    font-size: 10px;
+    color: rgb(153,153,153);
+  }
+  .button-wrap {
+      position: relative;
+    }
 
     /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
     @media screen and (max-width: 600px) {
@@ -109,7 +130,7 @@
             <!-- Inner -->
                 <div class="inner">
                     <header>
-                        <h2 style="color: white;"><a href="" id="logo">ADD ANNOUNCEMENTS</a></h2>
+                        <h2 style="color: white;"><a href="" id="logo">ADD OFFER</a></h2>
                     </header>
                 </div>
             
@@ -150,22 +171,26 @@
         <div class="container">
           <!-- <h2 style="text-align: center;color: #008000;">ADD ANNOUNCEMENTS </h2> -->
           <br>
-          <form action="/announcements" style="margin: 2% 10% 2% 10%;" method="POST">
+          <form action="/hotel/<%=foundId%>/offer" style="margin: 2% 10% 2% 10%;" method="POST" enctype="multipart/form-data">            
             <div class="row">
-              <div class="col-25">
-                <label for="loc" style="font-size: 125%;color: #cc3399;" >Location</label>
-              </div>
-              <div class="col-75">
-                <input type="text" id="loc" name="address" placeholder="Location...">
-              </div>
-            </div>            
+                <div class="col-25">
+                    <label for="announce" style="font-size: 125%;color: #cc3399;">Image</label>
+                </div>
+                <div class="col-75" style="position: relative;">                      
+                    <div class=”button-wrap”>
+                        <label class ="new-button" for="imgoffer" style="font-size:100%;"> Upload Image</label>
+                        <input id="imgoffer" name="imgOfferHotel" accept="image/*" type="file" multiple>
+                        <b><div id="file-upload-filename-offer"></div></b>
+                    </div>  
+                </div>
+            </div>
             <div class="row">
-              <div class="col-25">
-                <label for="announce" style="font-size: 125%;color: #cc3399;">Announcement</label>
-              </div>
-              <div class="col-75">
-                <textarea id="announce" name="text" placeholder="Announcement.." style="height:200px"></textarea>
-              </div>
+                <div class="col-25">
+                  <label for="announce" style="font-size: 125%;color: #cc3399;">Details</label>
+                </div>
+                <div class="col-75">
+                  <textarea id="announce" name="text" placeholder="Details.." style="height:200px"></textarea>
+                </div>
             </div>
             <br><br>
             <div class="row">
@@ -214,6 +239,25 @@
     </div>
   </div>
 </div>
+
+<script>
+    var input = document.getElementById( 'imgoffer' );
+    var infoArea = document.getElementById( 'file-upload-filename-offer' );
+
+    input.addEventListener( 'change', showFileName );
+
+    function showFileName( event ) {
+    
+    // the change event gives us the input it occurred in 
+    var input = event.srcElement;
+    
+    // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    var fileName = input.files[0].name;
+    
+    // use fileName however fits your app best, i.e. add it into a div
+    infoArea.textContent = fileName;
+    }
+</script>
 
 </body>
 </html>
