@@ -81,18 +81,35 @@ app.use(function (req, res, next) {
 
 app.use(flash());
 
-// app.use(function (req, res, next) {
-//     res.locals.currentUser = req.user;
-//     res.locals.error = req.flash("error");
-//     res.locals.success = req.flash("success");
-//     next();
-// });
-
 //////////////////login and signup routes/////////////////////////////////
 
 app.get("/",isLoggedIn,function (req,res){
    console.log("bc");
-   res.render("home");
+   Restaurant.find().exec(function (err, foundRestaurant){
+    if (err) {
+        console.log("something went wrong");
+        console.log(err);
+    }
+    else{
+        Hotel.find().exec(function (err, foundHotel){
+            if(err){
+                console.log("error");
+            }
+            else{
+                Destination.find().exec(function (err, foundDestination){
+                    if(err){
+                        console.log("error");
+                    }  
+                    else{
+                        res.render("home",{Restaurant:foundRestaurant, Hotel:foundHotel, Dest:foundDestination})
+                    }
+                })
+            }
+        })
+        // console.log(foundRestaurant);
+        
+    }
+    })
 });
 
 app.get("/landing", function (req, res) {

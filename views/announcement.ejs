@@ -173,10 +173,12 @@
                 <!-- <a href="/announcements/<%=announcement.id%>/edit" >
                   <button style="float: right;margin-left:2%;background-color:black;color:#cc3399">Edit</button>
                 </a> -->
+                
+                <%if(announcement.announcedBy.id.equals(currentUser._id)){%>
                 <form action="/announcements/<%=announcement.id%>?_method=DELETE" method="POST">
                   <button type="submit"style="float: right;margin-left:2%;background-color:black;color:#009999">Delete</button>
                 </form>
-                
+                <%}%>
                 <br>
                 <h5><a href="location2.html"><%=announcement.announcedBy.username%></a></h5>
                 <br>

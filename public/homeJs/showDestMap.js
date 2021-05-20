@@ -33,7 +33,16 @@ center: [home.Longitude, home.Latitude]
 
 var Current = new mapboxgl.Marker()
 .setLngLat([home.Longitude, home.Latitude])
+.setPopup(
+    new mapboxgl.Popup({
+        offset : 25
+    })
+    .setHTML(
+        `<h3>Current Location</h3>`
+    )
+)
 .addTo(map);
+
 
 console.log("ehe");
 console.log(Dest);
@@ -43,7 +52,7 @@ Dest.forEach(resta => {
     let he = "/dests/"+resta._id;
     console.log(he);
     var Current1 = new mapboxgl.Marker({
-        color: "#DC143C"
+        color: "#6C3483"
     })
      .setLngLat(resta.location.coordinates)
      .setPopup(
