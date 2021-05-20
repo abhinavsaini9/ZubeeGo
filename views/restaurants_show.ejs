@@ -125,18 +125,6 @@
     
     <!--review section-->
     
-    <div class="wrapper style1" style="background-color: black;">
-    
-    <div class="container">
-        <div class="row 200%">
-            <!-- <form action="/restaurants/<%=foundRestaurant.id%>/image" method = "POST" enctype="multipart/form-data">
-                <div class="col-75" style="position: relative;float:right">                  
-                    <label class ="new-button" for="imgfile" style="font-size:100%;"> Add Image</label>
-                    <input id="imgfile" name="imgRestOther" accept="image/*" type="file" multiple> 
-                    <b><div id="file-upload-filename"></div></b>
-                </div>
-                <button type="submit">Submit</button>  
-            </form>  -->
             <section class="carousel" id="carouse" style="background-color: black;">
 				<div class="reel" style="background-color: black;">
                     <% foundRestaurant.images.slice().reverse().forEach(function(image){%>
@@ -158,7 +146,9 @@
 			</section>
 
           
-
+<div class="wrapper style1" style="background-color: black;">
+    <div class="container">
+        <div class="row 200%">
             <div class="8u" id="content">
                 <article id="main">
                        
@@ -230,7 +220,7 @@
             
         </div>        
     </div>
-    </div>
+</div>
     
 <!-- review end-->
 
@@ -266,42 +256,7 @@
     </div>
 </div>    
    
-    
-    <!-- Footer -->
-            <div id="footer" style="margin-top: 1%;">
-                <div class="container">
-                    
-                    <div class="row">
-                        <div class="12u">
-                            
-                            <!-- Contact -->
-                                <section class="contact">
-                                    <header>
-                                        <h3>Nisl turpis nascetur interdum?</h3>
-                                    </header>
-                                    <p>Urna nisl non quis interdum mus ornare ridiculus egestas ridiculus lobortis vivamus tempor aliquet.</p>
-                                    <ul class="icons">
-                                        <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                                        <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                                        <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-                                        <li><a href="#" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>
-                                        <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-                                        <li><a href="#" class="icon fa-linkedin"><span class="label">Linkedin</span></a></li>
-                                    </ul>
-                                </section>
-                            
-                            <!-- Copyright -->
-                                <div class="copyright">
-                                    <ul class="menu">
-                                        <li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-                                    </ul>
-                                </div>
-                            
-                        </div>
-                    
-                    </div>
-                </div>
-            </div>
+
     
 
             <script>
@@ -382,6 +337,5 @@
                 }
             </script>
             
-    </body>
-    
-</html>
+
+            <%- include('partials/footer') -%>
