@@ -8,10 +8,13 @@ function showPosition(position) {
     console.log(home.Latitude)
     console.log(home.Longitude)
 }
+function noLocation() {
+    console.log("Could not find location");
+  }
 
 if (navigator.geolocation) {
     console.log("Permission")
-    navigator.geolocation.getCurrentPosition(showPosition);
+    navigator.geolocation.getCurrentPosition(showPosition,noLocation,{enableHighAccuracy:true});
 }
 else{
     console.log("No permission");
@@ -27,11 +30,14 @@ sleep(3000).then(() => {
 const map = new mapboxgl.Map({
 container: 'map',
 style: 'mapbox://styles/mapbox/streets-v11',
-zoom: 5,
+zoom: 15,
 center: [home.Longitude, home.Latitude]
 });
 
-var Current = new mapboxgl.Marker()
+var el_1 = document.createElement('div');
+el_1.id = 'User';
+
+var Current = new mapboxgl.Marker(el_1)
 .setLngLat([home.Longitude, home.Latitude])
 .setPopup(
     new mapboxgl.Popup({
@@ -43,27 +49,23 @@ var Current = new mapboxgl.Marker()
 )
 .addTo(map);
 
-console.log("ehe");
-console.log(Hotels);
-Hotels.forEach(resta => {
-    console.log(resta);
-    console.log(resta.location.coordinates);
-    let he = "/hotels/"+resta._id;
+Hotels.forEach(hotel => {
+    console.log(hotel);
+    console.log(hotel.location.coordinates);
+    let he = "/hotels/"+hotel._id;
     console.log(he);
-    var Current1 = new mapboxgl.Marker({
-        color: "#148F77"
-    })
-     .setLngLat(resta.location.coordinates)
+    var el_3 = document.createElement('div');
+    el_3.id = 'hotel';
+    var Current1 = new mapboxgl.Marker(el_3)
+     .setLngLat(hotel.location.coordinates)
      .setPopup(
         new mapboxgl.Popup({
             offset : 25
         })
         .setHTML(
-            `<h3>${resta.name}</h3><p>${resta.text}</p><a href=${he}>Go to page</a>`
+            `<h3>${hotel.name}</h3><p>${hotel.text}</p><a href=${he}>Go to page</a>`
         )
     )
      .addTo(map);
  });
-
 });
-

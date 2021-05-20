@@ -1,0 +1,36 @@
+#User{
+    background-image: url('https://static.thenounproject.com/png/39498-200.png');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+
+#restaurant{
+    background-image: url('https://www.shareicon.net/data/256x256/2015/09/21/644173_pin_512x512.png');
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+#hotel{
+    background-image: url('https://static.thenounproject.com/png/1661279-200.png');
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+#dest{
+    background-image: url('https://cdn.iconscout.com/icon/premium/png-512-thumb/point-of-interest-561247.png');
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+.mapboxgl-popup{
+    background-color: red;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}

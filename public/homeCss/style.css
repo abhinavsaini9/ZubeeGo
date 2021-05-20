@@ -1047,11 +1047,12 @@
 		#footer .footer-links a
 		{
 			color: tomato;
-		}
+		}	
 			#footer .footer-links a:hover
 			{
 				color: rgba(226, 29, 15, 0.966);
 				font-size:x-large;
+				text-decoration: none;
 			}
 		
 		#footer h2,

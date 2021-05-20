@@ -8,10 +8,13 @@ function showPosition(position) {
     console.log(home.Latitude)
     console.log(home.Longitude)
 }
+function noLocation() {
+    console.log("Could not find location");
+  }
 
 if (navigator.geolocation) {
     console.log("Permission")
-    navigator.geolocation.getCurrentPosition(showPosition);
+    navigator.geolocation.getCurrentPosition(showPosition,noLocation,{enableHighAccuracy:true});
 }
 else{
     console.log("No permission");
@@ -27,11 +30,14 @@ sleep(3000).then(() => {
 const map = new mapboxgl.Map({
 container: 'map',
 style: 'mapbox://styles/mapbox/streets-v11',
-zoom: 5,
+zoom: 15,
 center: [home.Longitude, home.Latitude]
 });
 
-var Current = new mapboxgl.Marker()
+var el_1 = document.createElement('div');
+el_1.id = 'User';
+
+var Current = new mapboxgl.Marker(el_1)
 .setLngLat([home.Longitude, home.Latitude])
 .setPopup(
     new mapboxgl.Popup({
@@ -43,16 +49,15 @@ var Current = new mapboxgl.Marker()
 )
 .addTo(map);
 
-console.log("ehe");
-console.log(Restrants);
+
 Restrants.forEach(resta => {
     console.log(resta);
     console.log(resta.location.coordinates);
     let he = "/restaurants/"+resta._id;
     console.log(he);
-    var Current1 = new mapboxgl.Marker({
-        color: "#e61919"
-    })
+    var el_2 = document.createElement('div');
+    el_2.id = 'restaurant';
+    var Current1 = new mapboxgl.Marker(el_2)
      .setLngLat(resta.location.coordinates)
      .setPopup(
         new mapboxgl.Popup({
@@ -64,6 +69,4 @@ Restrants.forEach(resta => {
     )
      .addTo(map);
  });
-
 });
-
