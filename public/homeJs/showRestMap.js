@@ -30,7 +30,7 @@ sleep(3000).then(() => {
 const map = new mapboxgl.Map({
 container: 'map',
 style: 'mapbox://styles/mapbox/streets-v11',
-zoom: 15,
+zoom: 10,
 center: [home.Longitude, home.Latitude]
 });
 
