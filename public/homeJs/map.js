@@ -14,7 +14,7 @@ function noLocation() {
 
 if (navigator.geolocation) {
     console.log("Permission")
-    navigator.geolocation.getCurrentPosition(showPosition,noLocation,{enableHighAccuracy:true});
+    navigator.geolocation.getCurrentPosition(showPosition,noLocation,{timeout:5000,enableHighAccuracy:true});
 }
 else{
     console.log("No permission");
