@@ -109,21 +109,33 @@
 						{
 							color: rgba(212,212,212,0.85);
 						}
+
+
+				@media only screen and (min-width: 980px) {
+					#header-mobile{
+						display:none;
+					}
+				}
+				
+
+					
 		</style>
 	</head>
 	<body id="top">
 		
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
-				<h1>ZubeeGo</h1>
+				<h1 style="color:tomato;font-family:Arial Rounded MT;">ZubeeGo</h1>
 				<nav id="nav">
-					<ul>						
-						<li><a class="btn big-register button special" data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Sign Up</a></li>
-						<li><a class="btn big-login button special" data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Sign In</a></li>
+					<ul > 						
+						<li style="font-size: 200%;font-family: Bradley Hand ITC;font-weight:bolder"><a  data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Sign Up</a></li>
+						<li style="font-size: 200%;font-family: Bradley Hand ITC;font-weight:bolder""><a  data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Sign In</a></li>
 						
 					</ul>
 				</nav>
 			</header>
+			
+
 
 			<div class="modal fade login" id="loginModal">
 				<div class="modal-dialog login animated">
@@ -302,6 +314,7 @@
 				<div data-u="loading" class="jssorl-009-spin" style="position:absolute;top:0px;left:0px;width:100%;height:100%;text-align:center;background-color:rgba(0,0,0,0.7);">
 					<img style="margin-top:-19px;position:relative;top:50%;width:38px;height:38px;" src="/images/spin.svg" />
 				</div>
+				
 				<div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1600px;height:650px;overflow:hidden;">
 					<div style="background-color:#d3890e;">
 						<img data-u="image" style="opacity:0.8;" data-src="/images/pic1.jpg" />
@@ -392,17 +405,31 @@
 						<polyline class="a" points="4960,1920 11040,8000 4960,14080 "></polyline>
 					</svg>
 				</div>
+				
 			</div>
 			<script type="text/javascript">jssor_1_slider_init();
 			</script>
 
 
-		
+		<!-- header for mobile-->
+
+		<div id="header-mobile"  >
+			<!-- <h1 id="heading">ZubeeGo</h1> -->
+			<div style="font-size: 120%;margin:2%;">
+				<div style="display: inline;float:left;font-family:Arial Rounded MT;font-size:20px;color: tomato">ZubeeGo</div>	
+				<ul >										
+					<li style="display: inline;float:right;"><a  data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Sign Up</a></li>
+					<li style="display: inline;float:right;"><a  data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Sign In</a></li>					
+				</ul>
+			</div>
+		</div>
 
 			
 
 		<!-- One -->
 			<section id="one" class="wrapper style1">
+
+				
 				<!-- <header class="major">
 					<h2>Ipsum feugiat consequat</h2>
 					<p>Tempus adipiscing commodo ut aliquam blandit</p>
