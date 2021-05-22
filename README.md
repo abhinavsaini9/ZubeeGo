@@ -47,13 +47,12 @@ CLOUD_SECRET
 
 Run the app on localhost.
 
-```js
-node index.js
+`node index.js `
 
-    OR
+OR
 
-npm run dev
-```
+`npm run dev`
+
 
 
 
