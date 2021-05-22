@@ -20,13 +20,17 @@ git clone https://github.com/abhinavsaini9/ZubeeGo.git
 
 cd ZubeeGo
 ```
+<br/>  
+
+### Install npm modules and dependencies for the web application 
 <br/>
-Install npm modules and dependencies for the web application 
 
 `npm install `
 
 <br/>
-Define all the Environment variables <br/>
+
+### Define all the Environment variables 
+<br/>
 
 ```js
 DB_URL
@@ -45,7 +49,7 @@ CLOUD_SECRET
 
 <br/>
 
-Run the app on localhost.
+### Run the app on localhost.
 
 `node index.js `
 
